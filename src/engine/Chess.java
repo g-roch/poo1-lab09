@@ -15,7 +15,8 @@ public class Chess implements chess.ChessController {
 
    @Override
    public void start(ChessView view) {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   view.startView();
    }
 
    @Override
