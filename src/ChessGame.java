@@ -8,6 +8,7 @@
 import chess.ChessController;
 import chess.ChessView;
 import chess.views.gui.GUIView;
+import chess.views.console.ConsoleView;
 import engine.Chess;
 
 /**
@@ -21,7 +22,7 @@ public class ChessGame {
       ChessController controller = new Chess(); // Instancier un ChessController
       // 2. Création de la vue
       ChessView view = new GUIView(controller); // mode GUI
-      // = new ConsoleView(controller); // mode Console
+      // ChessView view = new ConsoleView(controller); // mode Console
       // 3 . Lancement du programme.
       controller.start(view);
    }

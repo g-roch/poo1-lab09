@@ -15,10 +15,10 @@ public interface ChessController {
   /**
    * Appelé lorsque l'utilisateur a demandé un déplacement de la position X à la position Y.
    * La position 0, 0 est en bas à gauche de l'échiquier.
-   * @param fromX
-   * @param fromY
-   * @param toX
-   * @param toY
+   * @param fromX Coordonée horizontal source
+   * @param fromY Coordonée vertical source
+   * @param toX Coordonée horizontal destination
+   * @param toY Coordonée vertical destination
    * @return true si le mouvement a pu avoir lieu, false dans le cas contraire.
    */
   boolean move(int fromX, int fromY, int toX, int toY);
