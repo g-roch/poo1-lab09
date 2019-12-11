@@ -8,21 +8,53 @@ package engine;
 import chess.ChessView;
 import chess.PieceType;
 import chess.PlayerColor;
+import java.util.List;
+
+class Case {
+   public int x;
+   public int y;
+}
 
 /**
  *
  * @author cassa
  */
 public class Chess implements chess.ChessController {
-	public class GenericPiece {
-		protected PlayerColor color;
-		public GenericPiece(PlayerColor color, int x, int y) {
-			view.putPiece(this.pieceType(), PlayerColor.WHITE, 0, 0);
-		}
-		public PieceType pieceType() { return PieceType.ROOK; }
-	}
-	public class Rook extends GenericPiece {
-	}
+   public abstract class Piece {
+      protected PlayerColor color;
+      private int x; 
+      private int y; 
+
+      public Piece(PlayerColor color, int x, int y) {
+         this.color = color;
+         this.x = x;
+         this.y = y;
+      }
+      public abstract PieceType pieceType();
+      public List<Case> possibleMove() { throw new UnsupportedOperationException("Not supported yet."); }
+      public abstract boolean adversaryCheck();
+      public abstract List<Case> moveList();
+      public String toString() { throw new UnsupportedOperationException("Not supported yet."); }
+      public abstract String letter();
+      public abstract String letterWithMove();
+      public abstract chess.PieceType type();
+      public void putPiece() {
+         view.putPiece(this.pieceType(), color, 0, 0);         
+      }
+   }
+   public class Rook extends Piece {
+      @Override
+      public PieceType pieceType() {
+         return PieceType.ROOK; 
+      }
+
+      @Override
+      public boolean adversaryCheck() {
+         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      }
+   }
+        
+        
 
 	/**
 	 * Objet utiliser pour géré l'affichage à l'utilisateur.
