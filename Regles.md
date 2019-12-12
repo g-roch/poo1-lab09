@@ -37,9 +37,9 @@
 ## Promotion du Pion
  - Lorsque le pion arrive sur la dernière ligne, il se transforme au choix en
    - Dame
-	 - Tour
-	 - Fou
-	 - Cavalier
+   - Tour
+   - Fou
+   - Cavalier
 
 ## Nulle
 ### Pat
@@ -53,7 +53,6 @@
  - lorsque 50 coups on été jouer par chaque joueur sans prise ni déplacement de pion
 ### Répétition (manuel)
  - 3× le même échiquier, avec le même joueur au trait, les mêmes coups possible (Prise en passant et Roque)
-
 
 ## Implentation
  - Tour & Roi indication s'ils on bougé (roque)
