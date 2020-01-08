@@ -15,15 +15,15 @@ import java.util.List;
  */
 public abstract class Piece {
    private PlayerColor color;
-   protected int x; 
-   protected int y; 
+   //protected int x; 
+   //protected int y; 
 
    //private final String colorLetter[] = {"W", "B"};
 
-   protected Piece(PlayerColor color, int x, int y) {
+   protected Piece(PlayerColor color/*, int x, int y*/) {
       this.color = color;
-      this.x = x;
-      this.y = y;
+      //this.x = x;
+      //this.y = y;
    }
 
    public PlayerColor color() {
@@ -59,13 +59,15 @@ public abstract class Piece {
     * Retourne la liste de case de destination autorisé pour cette pièce,
     * Indépendement de la mise en échecs de son propre roi.
     */
-   protected abstract List<Case> moveList(Board board, Move lastMove);
+   protected abstract ListCase moveList(Board board, Move lastMove, Case c);
 
    /**
     * Retourne la liste de movement autorisé par les régles.
     */
-   public List<Case> possibleMove(Board board, Move lastMove) { 
-      throw new UnsupportedOperationException("Not supported yet."); 
+   public ListCase possibleMove(Board board, Move lastMove, Case c) { 
+      //throw new UnsupportedOperationException("Not supported yet."); 
+      // TODO
+      return moveList(board, lastMove, c);
    }
 
    ///**

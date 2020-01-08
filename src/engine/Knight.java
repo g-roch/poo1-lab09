@@ -13,8 +13,8 @@ import java.util.LinkedList;
  * Cavalier
  */
 public class Knight extends Piece {
-   public Knight(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   public Knight(PlayerColor color) {
+      super(color);
    }
 
    @Override
@@ -22,16 +22,16 @@ public class Knight extends Piece {
       return "N";
    }
    @Override
-   protected List<Case> moveList(Board board, Move lastMove) {
-      List<Case> list = new LinkedList<>();
-      if(x > 1 && y > 0)   list.add(new Case(x-2, y-1));
-      if(x > 0 && y > 1)   list.add(new Case(x-1, y-2));
-      if(x < 7 && y > 1)   list.add(new Case(x+1, y-2));
-      if(x < 6 && y > 0)   list.add(new Case(x+2, y-1));
-      if(x > 1 && y < 7)   list.add(new Case(x-2, y+1));
-      if(x > 0 && y < 6)   list.add(new Case(x-1, y+2));
-      if(x < 7 && y < 6)   list.add(new Case(x+1, y+2));
-      if(x < 6 && y < 7)   list.add(new Case(x+2, y+1));
+   protected ListCase moveList(Board board, Move lastMove, Case c) {
+      ListCase list = new ListCase();
+      list.addIfValidCase(c.x()-2, c.y()-1);
+      list.addIfValidCase(c.x()-1, c.y()-2);
+      list.addIfValidCase(c.x()+1, c.y()-2);
+      list.addIfValidCase(c.x()+2, c.y()-1);
+      list.addIfValidCase(c.x()-2, c.y()+1);
+      list.addIfValidCase(c.x()-1, c.y()+2);
+      list.addIfValidCase(c.x()+1, c.y()+2);
+      list.addIfValidCase(c.x()+2, c.y()+1);
       return list;
    }
    @Override

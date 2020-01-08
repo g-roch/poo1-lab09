@@ -11,8 +11,8 @@ import chess.PlayerColor;
  * Tour
  */
 public class Rook extends PieceLongRange {
-   public Rook(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   public Rook(PlayerColor color) {
+      super(color);
    }
 
    @Override

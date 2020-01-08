@@ -11,8 +11,8 @@ import chess.PlayerColor;
  * Fou
  */
 public class Bishop extends PieceLongRange {
-   public Bishop(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   public Bishop(PlayerColor color) {
+      super(color);
    }
 
    @Override

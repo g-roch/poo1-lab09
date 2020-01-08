@@ -7,10 +7,7 @@
 package engine;
 
 import chess.ChessView;
-import chess.PieceType;
 import chess.PlayerColor;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  *
@@ -24,7 +21,11 @@ public class Chess implements chess.ChessController {
     */
    protected ChessView view;
 
-   protected Piece[][] chessboard;
+   private Board board;
+   
+   private Move lastMove;
+   
+   private PlayerColor player = PlayerColor.WHITE;
 
    /*
 Besoin:
@@ -44,21 +45,36 @@ Besoin:
 
    @Override
    public boolean move(int fromX, int fromY, int toX, int toY) {
-      //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-      return false;
+      Move m = new Move(new Case(fromX, fromY), new Case(toX, toY));
+      Move l = board.move(lastMove, player, m);
+      if(l == null) 
+         return false;
+
+      lastMove = l;
+      
+      checkPromotion();
+      
+      showBoard();
+      
+      return true;
    }
 
-   @Override
-   public void newGame() {
-      chessboard = new Piece[8][8];
-      // Nettoye le plateau
-      for(int i = 0; i < 8; ++i) {
-         for(int j = 0; j < 8; ++j) {
-            view.removePiece(i, j);
+   private void showBoard() {
+      for(int x = 0; x < 8; ++x) {
+         for(int y = 0; y < 8; ++y) {
+            if(board.havePiece(x, y))
+               view.putPiece(board.getPiece(x, y).type(), board.getPiece(x, y).color(), x, y);
+            else
+               view.removePiece(x, y);
          }
       }
+   }
+   @Override
+   public void newGame() {
+      board = new Board();
+      // Nettoye le plateau
+      showBoard();
 
-      view.putPiece(PieceType.ROOK, PlayerColor.WHITE, 0, 0);
       //view.displayMessage("Bonjour joueur");
       //view.removePiece(7, 7);
       //System.err.println("Ask user");
@@ -79,6 +95,49 @@ Besoin:
       //		return "b";
       //	}
       //});
+   }
+
+   private void checkPromotion() {
+      for(int x = 0; x < 8; ++x) {
+         int y = 0;
+         boolean promotion = false;
+         promotion = board.getPiece(x, y) instanceof Pawn;
+         if(!promotion) {
+            y = 7;
+            promotion = board.getPiece(x, y) instanceof Pawn;
+         }
+         if(promotion) {
+            askUser(view, "Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
+            
+         }
+            
+      }
+//      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   }
+   
+   private class UserChoice implements ChessView.UserChoice {
+      private String value;
+      UserChoice(String value) {
+         this.value = value;
+      }
+      @Override
+      public String textValue() {
+         return value;
+      }
+      @Override
+      public String toString() {
+         return value;
+      }
+      
+   }
+
+   private void askUser(ChessView view, String titre, String question, String[] answers) {
+      ChessView.UserChoice t[] = new ChessView.UserChoice[answers.length];
+      
+      for(int i = 0; i < answers.length; ++i) {
+         t[i] = new UserChoice(answers[i]);
+      }
+      view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", t);
    }
 
 }

@@ -13,8 +13,8 @@ import java.util.LinkedList;
  * Roi
  */
 public class King extends Piece {
-   public King(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   public King(PlayerColor color) {
+      super(color);
    }
 
    private boolean canCastlingShort() {
@@ -36,20 +36,20 @@ public class King extends Piece {
       return ret;
    }
    @Override
-   protected List<Case> moveList(Board board, Move lastMove) {
-      List<Case> list = new LinkedList<>();
+   protected ListCase moveList(Board board, Move lastMove, Case c) {
+      ListCase list = new ListCase();
       // TODO
-      Board.addIfValidCase(x-1, y-1);
-      Board.addIfValidCase(x-1, y  );
-      Board.addIfValidCase(x-1, y+1);
-      Board.addIfValidCase(x  , y-1);
-      Board.addIfValidCase(x  , y+1);
-      Board.addIfValidCase(x+1, y-1);
-      Board.addIfValidCase(x+1, y  );
-      Board.addIfValidCase(x+1, y+1);
+      list.addIfValidCase(c.x()-1, c.y()-1);
+      list.addIfValidCase(c.x()-1, c.y()  );
+      list.addIfValidCase(c.x()-1, c.y()+1);
+      list.addIfValidCase(c.x()  , c.y()-1);
+      list.addIfValidCase(c.x()  , c.y()+1);
+      list.addIfValidCase(c.x()+1, c.y()-1);
+      list.addIfValidCase(c.x()+1, c.y()  );
+      list.addIfValidCase(c.x()+1, c.y()+1);
 
-      if(canCastlingShort()) list.add(new Case(5, y));
-      if(canCastlingLong())  list.add(new Case(2, y));
+      if(canCastlingShort()) list.addIfValidCase(5, c.y());
+      if(canCastlingLong())  list.addIfValidCase(2, c.y());
       return list;
    }
    @Override

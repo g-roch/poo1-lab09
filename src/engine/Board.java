@@ -12,8 +12,66 @@ import java.util.List;
 public class Board {
    private Piece[][] board;
 
-   public Move move(Move lastMove, PlayerColor color, Move move) {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public Board() {
+      board = new Piece[8][8];
+      board[0][7] = new Rook(PlayerColor.BLACK);
+      board[1][7] = new Knight(PlayerColor.BLACK);
+      board[2][7] = new Bishop(PlayerColor.BLACK);
+      board[3][7] = new Queen(PlayerColor.BLACK);
+      board[4][7] = new King(PlayerColor.BLACK);
+      board[5][7] = new Bishop(PlayerColor.BLACK);
+      board[6][7] = new Knight(PlayerColor.BLACK);
+      board[7][7] = new Rook(PlayerColor.BLACK);
+      for (int i = 0; i < 8; ++i)
+         board[i][6] = new Pawn(PlayerColor.BLACK);
+      
+      board[0][0] = new Rook(PlayerColor.WHITE);
+      board[1][0] = new Knight(PlayerColor.WHITE);
+      board[2][0] = new Bishop(PlayerColor.WHITE);
+      board[3][0] = new Queen(PlayerColor.WHITE);
+      board[4][0] = new King(PlayerColor.WHITE);
+      board[5][0] = new Bishop(PlayerColor.WHITE);
+      board[6][0] = new Knight(PlayerColor.WHITE);
+      board[7][0] = new Rook(PlayerColor.WHITE);
+      for (int i = 0; i < 8; ++i)
+         board[i][1] = new Pawn(PlayerColor.WHITE);
    }
+   
+   public Move move(Move lastMove, PlayerColor color, Move move) {
+      
+      if(getPiece(move.from()).color() != color)
+         return null;
+      ListCase listPossibleMove = getPiece(move.from()).possibleMove(this, lastMove, move.from());
+      boolean possibleMove = false;
+      for(Case c : listPossibleMove) 
+         if(c.equals(move.to()))
+            possibleMove = true;
+      if(possibleMove) {
+         setPiece(move.to(), getPiece(move.from()));
+         setPiece(move.from(), null);
+         return move;
+      } else {
+         return null;
+      }
+      //throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   boolean havePiece(int i, int j) {
+      return board[i][j] != null;
+   }
+   boolean havePiece(Case c) {
+      return havePiece(c.x(), c.y());
+   }
+   
+   Piece getPiece(int x, int y) {
+      return board[x][y];
+   }
+   Piece getPiece(Case c) {
+      return getPiece(c.x(), c.y());
+   }
+   void setPiece(Case c, Piece p) {
+      board[c.x()][c.y()] = p;
+   }
+   
 
 }

@@ -11,8 +11,8 @@ import chess.PlayerColor;
  * Dame
  */
 public class Queen extends PieceLongRange {
-   public Queen(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   public Queen(PlayerColor color) {
+      super(color);
    }
 
    @Override

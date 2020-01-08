@@ -14,4 +14,10 @@ public class Move {
       this.from = from;
       this.to = to;
    }
+   public Case from() {
+      return from;
+   }
+   public Case to() {
+      return to;
+   }
 }

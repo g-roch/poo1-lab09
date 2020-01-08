@@ -8,13 +8,39 @@ import chess.PlayerColor;
 import java.util.List;
 import java.util.LinkedList;
 
+
 public abstract class PieceLongRange extends Piece { // Piece long-distance
-   protected PieceLongRange(PlayerColor color, int x, int y) {
-      super(color, x, y);
+   protected PieceLongRange(PlayerColor color) {
+      super(color);
    }
    @Override
-   protected List<Case> moveList(Board board, Move lastMove) {
-      List<Case> list = new LinkedList<>();
+   protected ListCase moveList(Board board, Move lastMove, Case c) {
+      ListCase list = new ListCase();
+      List<Integer[]> orientations = new LinkedList<>();
+      if(canMoveStraight()) {
+         orientations.add(new Integer[] {1,0});
+         orientations.add(new Integer[] {-1,0});
+         orientations.add(new Integer[] {0,1});
+         orientations.add(new Integer[] {0,-1});
+      }
+      if(canMoveDiagonal()) {
+         orientations.add(new Integer[] {1,1});
+         orientations.add(new Integer[] {1,-1});
+         orientations.add(new Integer[] {-1,1});
+         orientations.add(new Integer[] {-1,-1});
+      }
+      for(Integer[] orientation : orientations) {
+         int i = c.x() + orientation[0];
+         int j = c.y() + orientation[1];
+         while(ListCase.validCoord(i, j)) {
+            list.addIfValidCase(i, j);
+            if(board.havePiece(i, j))
+               break;
+            i += orientation[0];
+            j += orientation[1];
+         }
+      }
+      return list;
       // TODO uncomment
       //if(canMoveStraight()) {
       //   for(int i = x; i >= 0; --i) {
@@ -60,7 +86,7 @@ public abstract class PieceLongRange extends Piece { // Piece long-distance
       //         break;
       //   }
       //}
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
    }
    /**
     * La piece a le droit de se déplecer en digonale
