@@ -70,8 +70,6 @@ public abstract class Piece implements Cloneable {
     * Retourne la liste de movement autorisé par les régles.
     */
    public ListCase possibleMove(Board board, Move lastMove, Case c) { 
-      //throw new UnsupportedOperationException("Not supported yet."); 
-      // TODO
       ListCase moveList = moveList(board, lastMove, c);
       ListCase possibleMove = new ListCase();
       for(Case destinationCase : moveList) {

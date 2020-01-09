@@ -101,12 +101,15 @@ public class Board implements Cloneable {
    boolean caseInCheck(Case c, PlayerColor color) { // couleur du roi
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
-            if(havePiece(x, y) && getPiece(x, y).color() != color) {
-               getPiece(x, y).adversaryCheck(this, c);
+            if(havePiece(x, y)
+                    && getPiece(x, y).color() != color
+                    && getPiece(x, y).adversaryCheck(this, c)
+            ) {
+               return true;
             }
          }
       }
-      throw new UnsupportedOperationException("Not supported yet.");
+      return false;
    }
 
    @Override

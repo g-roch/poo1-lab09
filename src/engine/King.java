@@ -6,8 +6,6 @@ package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * Roi
@@ -61,13 +59,23 @@ public class King extends Piece {
       list.addIfValidCase(c.x()+1, c.y()  );
       list.addIfValidCase(c.x()+1, c.y()+1);
 
-      if(canCastlingShort(board)) list.add(5, c.y());
-      if(canCastlingLong(board))  list.add(2, c.y());
       return list;
    }
 
    @Override
    public ListCase possibleMove(Board board, Move lastMove, Case c) {
+      ListCase list = moveList(board, lastMove, c);
+      if(canCastlingShort(board)) list.add(5, c.y());
+      if(canCastlingLong(board))  list.add(2, c.y());
+      ListCase possibleMove = new ListCase();
+      for(Case destinationCase : list) {
+         Board tmpBoard = board.clone();
+         tmpBoard.getPiece(c).moveList(tmpBoard, lastMove, destinationCase);
+         if(!tmpBoard.kingInCheck(color())) {
+            possibleMove.add(destinationCase);
+         }
+      }
+      return possibleMove;
       //return super.possibleMove(board, lastMove, c); //To change body of generated methods, choose Tools | Templates.
    }
    

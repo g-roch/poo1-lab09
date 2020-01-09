@@ -55,8 +55,9 @@ Besoin:
          return false;
 
       lastMove = l;
-      
+
       checkPromotion();
+      checkCheck();
       
       showBoard();
       
@@ -67,6 +68,7 @@ Besoin:
       
       return true;
    }
+
 
    private void showBoard() {
       for(int x = 0; x < 8; ++x) {
@@ -138,6 +140,17 @@ Besoin:
             
       }
 //      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   }
+
+   private void checkCheck() {
+      boolean whiteKingInCheck = board.kingInCheck(PlayerColor.WHITE);
+      boolean blackKingInCheck = board.kingInCheck(PlayerColor.BLACK);
+      if(whiteKingInCheck && blackKingInCheck)
+         view.displayMessage("Échecs au blanc et au noir");
+      else if(blackKingInCheck)
+         view.displayMessage("Échecs au noir");
+      else if(whiteKingInCheck)
+         view.displayMessage("Échecs au blanc");
    }
    
    private class UserChoice implements ChessView.UserChoice {

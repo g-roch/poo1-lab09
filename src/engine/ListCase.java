@@ -18,15 +18,12 @@ public class ListCase extends LinkedList<Case> {
    }
 */
 
-   public static boolean validCoord(int x, int y) {
-    return x >= 0 && x < 8 && y >= 0 && y < 8;
-   }
 
    public void add(int x, int y) {
       add(new Case(x, y));
    }
 
    public void addIfValidCase(int x, int y) {
-      if(validCoord(x, y)) add(new Case(x, y));
+      if(Case.validCoord(x, y)) add(new Case(x, y));
    }
 }
