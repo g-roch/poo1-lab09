@@ -49,6 +49,6 @@ public class Rook extends PieceLongRange {
       moved = true;
       super.move(board, move);
    }
-   
+
    
 }

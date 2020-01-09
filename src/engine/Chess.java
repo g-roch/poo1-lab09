@@ -45,27 +45,32 @@ Besoin:
 
    @Override
    public boolean move(int fromX, int fromY, int toX, int toY) {
+
       Move m = new Move(new Case(fromX, fromY), new Case(toX, toY));
 
       // TODO: Supprimer ligne
       if(board.havePiece(m.from())) player = board.getPiece(m.from()).color();
 
       Move l = board.move(lastMove, player, m);
-      if(l == null) 
-         return false;
-
-      lastMove = l;
+      if(l != null) {
+         lastMove = l;
+         if(player == PlayerColor.WHITE)
+            player = PlayerColor.BLACK;
+         else
+            player = PlayerColor.WHITE;
+      }
+      
+      String message = "";
 
       checkPromotion();
-      checkCheck();
-      
-      showBoard();
-      
+      message += checkCheck();
+     
       if(player == PlayerColor.WHITE)
-         player = PlayerColor.BLACK;
+         message = "C'est aux blancs ! "+message;
       else
-         player = PlayerColor.WHITE;
-      
+         message = "C'est aux noirs ! "+message;
+      showBoard();
+      view.displayMessage(message);
       return true;
    }
 
@@ -143,15 +148,16 @@ Besoin:
 //      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
    }
 
-   private void checkCheck() {
+   private String checkCheck() {
       boolean whiteKingInCheck = board.kingInCheck(PlayerColor.WHITE);
       boolean blackKingInCheck = board.kingInCheck(PlayerColor.BLACK);
       if(whiteKingInCheck && blackKingInCheck)
-         view.displayMessage("Échecs au blanc et au noir");
+         return "Échecs au blanc et au noir";
       else if(blackKingInCheck)
-         view.displayMessage("Échecs au noir");
+         return "Échecs au noir";
       else if(whiteKingInCheck)
-         view.displayMessage("Échecs au blanc");
+         return "Échecs au blanc";
+      return "";
    }
    
    private class UserChoice implements ChessView.UserChoice {

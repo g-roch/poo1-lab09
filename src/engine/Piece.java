@@ -32,12 +32,12 @@ public abstract class Piece implements Cloneable {
 
 
    /**
-    * Indique si cette pièce mets en échec l'adversaire
+    * Indique si cette pièce mets en échec la case kingCase
     */
-   public boolean adversaryCheck(Board board, Case c) {
-      ListCase moveList = moveList(board, null, c);
+   public boolean adversaryCheck(Board board, Case kingCase, Case selfCase) {
+      ListCase moveList = moveList(board, null, selfCase);
       for(Case destinationCase : moveList) {
-         if(destinationCase.equals(c))
+         if(destinationCase.equals(kingCase))
             return true;
       }
       return false;
@@ -73,8 +73,8 @@ public abstract class Piece implements Cloneable {
       ListCase moveList = moveList(board, lastMove, c);
       ListCase possibleMove = new ListCase();
       for(Case destinationCase : moveList) {
-         Board tmpBoard = board.clone();
-         tmpBoard.getPiece(c).moveList(tmpBoard, lastMove, destinationCase);
+         Board tmpBoard = new Board(board);
+         tmpBoard.getPiece(c).move(tmpBoard, new Move(c, destinationCase));
          if(!tmpBoard.kingInCheck(color)) {
             possibleMove.add(destinationCase);
          }
@@ -100,7 +100,7 @@ public abstract class Piece implements Cloneable {
    }
 
    @Override
-   protected Piece clone() {
+   public Piece clone() {
       Piece piece = null;
       try {
          piece = (Piece) super.clone();

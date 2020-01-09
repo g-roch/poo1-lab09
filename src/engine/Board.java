@@ -9,7 +9,7 @@ import engine.Piece;
 import engine.Move;
 import java.util.List;
 
-public class Board implements Cloneable {
+public class Board {
    private Piece[][] board;
 
    public Board() {
@@ -43,6 +43,7 @@ public class Board implements Cloneable {
       if(!havePiece(move.from()) || getPiece(move.from()).color() != color)
          return null;
 
+      
       // Vérifie que la destination se trouve dans les destination possible de la piece
       ListCase listPossibleMove = getPiece(move.from()).possibleMove(this, lastMove, move.from());
       boolean possibleMove = false;
@@ -50,8 +51,10 @@ public class Board implements Cloneable {
          if(c.equals(move.to()))
             possibleMove = true;
 
+
       if(!possibleMove) 
          return null;
+
 
       // Si la destination est occupée, elle doit être de la couleur adverse
       if(havePiece(move.to()) && getPiece(move.to()).color() == color)
@@ -101,9 +104,10 @@ public class Board implements Cloneable {
    boolean caseInCheck(Case c, PlayerColor color) { // couleur du roi
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
-            if(havePiece(x, y)
-                    && getPiece(x, y).color() != color
-                    && getPiece(x, y).adversaryCheck(this, c)
+            Case selfCase = new Case(x, y);
+            if(havePiece(selfCase)
+                    && getPiece(selfCase).color() != color
+                    && getPiece(selfCase).adversaryCheck(this, c, selfCase)
             ) {
                return true;
             }
@@ -112,14 +116,21 @@ public class Board implements Cloneable {
       return false;
    }
 
-   @Override
-   public Board clone() {
-      Board board = null;
-      try {
-         board = (Board) super.clone();
-      } catch (CloneNotSupportedException e) { }
-      return board;
+   
+   public Board(Board b) {
+      board = new Piece[8][8];
+      for(int x = 0; x < 8; ++x) {
+         for(int y = 0; y < 8; ++y) {
+            if(b.board[x][y] == null)
+               board[x][y] = null;
+            else
+               board[x][y] = b.board[x][y].clone();
+         }
+      }
+      
+      
    }
+   
    
    
    

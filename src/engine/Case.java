@@ -52,5 +52,14 @@ class Case {
                 && o.getClass() == getClass()
                 && ((Case) o).x == x && ((Case) o).y == y;
     }
+
+   @Override
+   public String toString() {
+      
+      return "Case("+((char)(x+65))+(y+1)+")";
+//      return "Case("+x+","+y+")";
+   }
+    
+    
 }
 
