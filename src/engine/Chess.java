@@ -64,6 +64,8 @@ Besoin:
 
       checkPromotion();
       message += checkCheck();
+      message += checkNull(); 
+      message += checkMate(); 
      
       if(player == PlayerColor.WHITE)
          message = "C'est aux blancs ! "+message;
@@ -152,12 +154,40 @@ Besoin:
       boolean whiteKingInCheck = board.kingInCheck(PlayerColor.WHITE);
       boolean blackKingInCheck = board.kingInCheck(PlayerColor.BLACK);
       if(whiteKingInCheck && blackKingInCheck)
-         return "Échecs au blanc et au noir";
+         return "Échec aux blancs et aux noirs ";
       else if(blackKingInCheck)
-         return "Échecs au noir";
+         return "Échec aux noirs ";
       else if(whiteKingInCheck)
-         return "Échecs au blanc";
+         return "Échec aux blancs ";
       return "";
+   }
+
+   private String checkNull() {
+      if(countPossibleMoves() == 0 && !board.kingInCheck(player)){
+         return "Pat ";
+      }
+      return "";
+   }
+   
+   
+   private String checkMate() {
+      if(countPossibleMoves() == 0 && board.kingInCheck(player)){
+         return "Check mate ";
+      }
+      return "";
+   }
+   
+   private int countPossibleMoves(){
+      int countMoves = 0; 
+      for(int x = 0; x < 8; ++x){
+         for(int y = 0; y < 8; ++y){
+            Case c = new Case(x, y);
+            if(board.havePiece(c) && board.getPiece(c).color() == player){
+               countMoves += board.getPiece(c).possibleMove(board, lastMove, c).size();
+            }
+         }
+      }
+      return countMoves; 
    }
    
    private class UserChoice implements ChessView.UserChoice {
