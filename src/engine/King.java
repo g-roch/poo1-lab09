@@ -27,12 +27,15 @@ public class King extends Piece {
    }
 
    private boolean canCastling(Board board, int rookX, int bishopX) {
+      Case rookCase = new Case(rookX, baseLine());
+      Case bishopCase = new Case(bishopX, baseLine());
+      Case kingCase = new Case(4, baseLine());
       return !moved
-              && board.havePiece(rookX, baseLine())
-              && board.getPiece(rookX, baseLine()) instanceof Rook
-              && !((Rook) board.getPiece(rookX, baseLine())).haveMoved()
-              && !board.caseInCheck(new Case(bishopX, baseLine()), color())
-              && !board.caseInCheck(new Case(4, baseLine()), color())
+              && board.havePiece(rookCase)
+              && board.getPiece(rookCase) instanceof Rook
+              && !((Rook) board.getPiece(rookCase)).haveMoved()
+              && !board.caseInCheck(bishopCase, color())
+              && !board.caseInCheck(kingCase, color())
               ;
    }
    private boolean canCastlingShort(Board board) {

@@ -40,7 +40,7 @@ public class Pawn extends Piece {
          baseLine = 6;
       
       // avance tout droit
-      if(!board.havePiece(c.x(), c.y() + direction())) {
+      if(!board.havePiece(c.add(0, direction()))) {
          list.addIfValidCase(c.x(), c.y() + direction());
          if(baseLine == c.y() && board.getPiece(c.x(), c.y() + 2*direction()) == null) {
             list.addIfValidCase(c.x(), c.y() + 2*direction());
@@ -49,20 +49,20 @@ public class Pawn extends Piece {
       
       // Prise
       for(int i = -1; i < 2; i += 2) {
-         if(ListCase.validCoord(c.x() + i, c.y() + direction())) {
-            if(board.havePiece(c.x() + i, c.y() + direction())) {
+         if(c.validAdd(i, direction())) {
+            if(board.havePiece(c.add(i, direction()))) {
                // Prise normal
                list.add(c.x() + i, c.y() + direction());
             } else if(lastMove != null
-                  && board.havePiece(c.x() + i, c.y()) 
-                  && board.getPiece(c.x() + i, c.y()) instanceof Pawn 
+                  && board.havePiece(c.add(i, 0)) 
+                  && board.getPiece(c.add(i, 0)) instanceof Pawn 
                   && lastMove.to().x() == c.x() + i
                   && lastMove.to().y() == c.y()
                   && lastMove.from().x() == c.x() + i
                   && lastMove.from().y() == c.y() + 2*direction()
                ) { 
                // Prise en passant
-               list.add(c.x() + i, c.y() + direction());
+               list.add(c.add(i, direction()));
             }
 
          }

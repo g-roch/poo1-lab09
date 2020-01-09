@@ -23,15 +23,12 @@ public abstract class PieceLongRange extends Piece { // Piece long-distance
       ListCase list = new ListCase();
       List<Integer[]> orientations = getOrientations();
       for(Integer[] orientation : orientations) {
-         Case destinationCase = c.add(orientation);
-         int i = c.x() + orientation[0];
-         int j = c.y() + orientation[1];
-         while(Case.validCoord(i, j)) {
-            list.addIfValidCase(i, j);
-            if(board.havePiece(i, j))
+         Case destinationCase = c;
+         while(destinationCase.validAdd(orientation)) {
+            destinationCase = destinationCase.add(orientation);
+            list.add(destinationCase);
+            if(board.havePiece(destinationCase))
                break;
-            i += orientation[0];
-            j += orientation[1];
          }
       }
       return list;

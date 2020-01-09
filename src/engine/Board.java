@@ -63,8 +63,8 @@ public class Board implements Cloneable {
       //throw new UnsupportedOperationException("Not supported yet.");
    }
 
-   boolean havePiece(int x, int y) {
-      return ListCase.validCoord(x, y) && board[x][y] != null;
+   private boolean havePiece(int x, int y) {
+      return Case.validCoord(x, y) && board[x][y] != null;
    }
    boolean havePiece(Case c) {
       return havePiece(c.x(), c.y());

@@ -73,8 +73,9 @@ Besoin:
    private void showBoard() {
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
-            if(board.havePiece(x, y))
-               view.putPiece(board.getPiece(x, y).type(), board.getPiece(x, y).color(), x, y);
+            Case c = new Case(x, y);
+            if(board.havePiece(c))
+               view.putPiece(board.getPiece(c).type(), board.getPiece(c).color(), x, y);
             else
                view.removePiece(x, y);
          }
