@@ -6,6 +6,8 @@ package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Fou
@@ -16,13 +18,15 @@ public class Bishop extends PieceLongRange {
    }
 
    @Override
-   public boolean canMoveDiagonal() {
-      return true;
+   public List<Integer[]> getOrientations() {
+      List<Integer[]> orientations = new LinkedList<>();
+      orientations.add(new Integer[] {1,1});
+      orientations.add(new Integer[] {1,-1});
+      orientations.add(new Integer[] {-1,1});
+      orientations.add(new Integer[] {-1,-1});
+      return orientations;
    }
-   @Override
-   public boolean canMoveStraight() {
-      return false;
-   }
+
    @Override
    public String letter() {
       return "B";

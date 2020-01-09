@@ -6,6 +6,8 @@ package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Tour
@@ -16,13 +18,15 @@ public class Rook extends PieceLongRange {
    }
 
    @Override
-   public boolean canMoveDiagonal() {
-      return false;
+   public List<Integer[]> getOrientations() {
+      List<Integer[]> orientations = new LinkedList<>();
+      orientations.add(new Integer[] {1,0});
+      orientations.add(new Integer[] {-1,0});
+      orientations.add(new Integer[] {0,1});
+      orientations.add(new Integer[] {0,-1});
+      return orientations;
    }
-   @Override
-   public boolean canMoveStraight() {
-      return true;
-   }
+
    @Override
    public String letter() {
       return "R";

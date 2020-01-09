@@ -46,6 +46,7 @@ Besoin:
    @Override
    public boolean move(int fromX, int fromY, int toX, int toY) {
       Move m = new Move(new Case(fromX, fromY), new Case(toX, toY));
+      if(board.havePiece(m.from())) player = board.getPiece(m.from()).color();
       Move l = board.move(lastMove, player, m);
       if(l == null) 
          return false;

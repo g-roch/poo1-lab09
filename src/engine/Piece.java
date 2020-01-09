@@ -78,4 +78,12 @@ public abstract class Piece {
     * Retourne le type de la piece pour l'affichage
     */
    public abstract PieceType type();
+
+   /**
+    * Déplace la pièce (Ne vérifie pas que le mouvement est valide)
+    */
+   public void move(Board board, Move move) {
+      board.setPiece(move.to(), this);
+      board.setPiece(move.from(), null);
+   }
 }

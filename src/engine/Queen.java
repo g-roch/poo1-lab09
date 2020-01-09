@@ -6,6 +6,8 @@ package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Dame
@@ -16,13 +18,19 @@ public class Queen extends PieceLongRange {
    }
 
    @Override
-   public boolean canMoveDiagonal() {
-      return true;
+   public List<Integer[]> getOrientations() {
+      List<Integer[]> orientations = new LinkedList<>();
+      orientations.add(new Integer[] {1,0});
+      orientations.add(new Integer[] {-1,0});
+      orientations.add(new Integer[] {0,1});
+      orientations.add(new Integer[] {0,-1});
+      orientations.add(new Integer[] {1,1});
+      orientations.add(new Integer[] {1,-1});
+      orientations.add(new Integer[] {-1,1});
+      orientations.add(new Integer[] {-1,-1});
+      return orientations;
    }
-   @Override
-   public boolean canMoveStraight() {
-      return true;
-   }
+
    @Override
    public String letter() {
       return "Q";

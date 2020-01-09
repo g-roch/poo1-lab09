@@ -39,20 +39,27 @@ public class Board {
    
    public Move move(Move lastMove, PlayerColor color, Move move) {
       
-      if(getPiece(move.from()).color() != color)
+      // Vérifie que la pièce à déplacer appartient bien au joueur
+      if(!havePiece(move.from()) || getPiece(move.from()).color() != color)
          return null;
+
+      // Vérifie que la destination se trouve dans les destination possible de la piece
       ListCase listPossibleMove = getPiece(move.from()).possibleMove(this, lastMove, move.from());
       boolean possibleMove = false;
       for(Case c : listPossibleMove) 
          if(c.equals(move.to()))
             possibleMove = true;
-      if(possibleMove) {
-         setPiece(move.to(), getPiece(move.from()));
-         setPiece(move.from(), null);
-         return move;
-      } else {
+
+      if(!possibleMove) 
          return null;
-      }
+
+      // Si la destination est occupée, elle doit être de la couleur adverse
+      if(havePiece(move.to()) && getPiece(move.to()).color() == color)
+         return null;
+
+      getPiece(move.from()).move(this, move);
+      return move;
+
       //throw new UnsupportedOperationException("Not supported yet.");
    }
 
@@ -69,8 +76,11 @@ public class Board {
    Piece getPiece(Case c) {
       return getPiece(c.x(), c.y());
    }
+   void setPiece(int x, int y, Piece p) {
+      board[x][y] = p;
+   }
    void setPiece(Case c, Piece p) {
-      board[c.x()][c.y()] = p;
+      setPiece(c.x(), c.y(), p);
    }
    
 

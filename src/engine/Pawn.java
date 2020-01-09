@@ -39,6 +39,7 @@ public class Pawn extends Piece {
       else
          baseLine = 6;
       
+      // avance tout droit
       if(!board.havePiece(c.x(), c.y() + direction())) {
          list.addIfValidCase(c.x(), c.y() + direction());
          if(baseLine == c.y() && board.getPiece(c.x(), c.y() + 2*direction()) == null) {
@@ -46,30 +47,43 @@ public class Pawn extends Piece {
          }
       }
       
-      
-      if(ListCase.validCoord(c.x() - 1, c.y() + direction()) 
-              && board.havePiece(c.x() - 1, c.y() + direction())) {
-         list.add(c.x() - 1, c.y() + direction());
-      }
-      if(ListCase.validCoord(c.x() + 1, c.y() + direction()) 
-              && board.havePiece(c.x() + 1, c.y() + direction())) {
-         list.add(c.x() + 1, c.y() + direction());
-      }
+      // Prise
+      for(int i = -1; i < 2; i += 2) {
+         if(ListCase.validCoord(c.x() + i, c.y() + direction())) {
+            if(board.havePiece(c.x() + i, c.y() + direction())) {
+               // Prise normal
+               list.add(c.x() + i, c.y() + direction());
+            } else if(lastMove != null
+                  && board.havePiece(c.x() + i, c.y()) 
+                  && board.getPiece(c.x() + i, c.y()) instanceof Pawn 
+                  && lastMove.to().x() == c.x() + i
+                  && lastMove.to().y() == c.y()
+                  && lastMove.from().x() == c.x() + i
+                  && lastMove.from().y() == c.y() + 2*direction()
+               ) { 
+               // Prise en passant
+               list.add(c.x() + i, c.y() + direction());
+            }
 
+         }
+      }
       return list;
 
-      // TODO
-      // if(chessboard[x][y+direction()] == null)
-      //    list.add(new Case(x, y+direction()));
-      // // Avance de 2 au début
-      // if(y == baseLine && chessboard[x][y+direction()] == null
-      //       && chessboard[x][y+direction()+direction()] == null)
-      //    list.add(new Case(x, y+direction()+direction()));
-
-      //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
    }
    @Override
    public chess.PieceType type() {
       return PieceType.PAWN; 
+   }
+
+   @Override
+   public void move(Board board, Move move) {
+      if(!board.havePiece(move.to())
+            && move.to().x() != move.from().x()
+         ) {
+         // prise en passant
+         board.setPiece(move.to().x(), move.from().y(), null);
+         System.out.println("asdf");
+      }
+      super.move(board, move);
    }
 }
