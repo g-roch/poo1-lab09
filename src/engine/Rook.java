@@ -13,8 +13,16 @@ import java.util.LinkedList;
  * Tour
  */
 public class Rook extends PieceLongRange {
+   
+   private boolean moved;
+   
    public Rook(PlayerColor color) {
       super(color);
+      moved = false;
+   }
+   
+   public boolean haveMoved() {
+      return moved;
    }
 
    @Override
@@ -35,4 +43,12 @@ public class Rook extends PieceLongRange {
    public chess.PieceType type() {
       return PieceType.ROOK; 
    }
+
+   @Override
+   public void move(Board board, Move move) {
+      moved = true;
+      super.move(board, move);
+   }
+   
+   
 }

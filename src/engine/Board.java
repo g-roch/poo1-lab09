@@ -9,7 +9,7 @@ import engine.Piece;
 import engine.Move;
 import java.util.List;
 
-public class Board {
+public class Board implements Cloneable {
    private Piece[][] board;
 
    public Board() {
@@ -63,8 +63,8 @@ public class Board {
       //throw new UnsupportedOperationException("Not supported yet.");
    }
 
-   boolean havePiece(int i, int j) {
-      return board[i][j] != null;
+   boolean havePiece(int x, int y) {
+      return ListCase.validCoord(x, y) && board[x][y] != null;
    }
    boolean havePiece(Case c) {
       return havePiece(c.x(), c.y());
@@ -82,6 +82,43 @@ public class Board {
    void setPiece(Case c, Piece p) {
       setPiece(c.x(), c.y(), p);
    }
+   
+   
+   
+   boolean kingInCheck(PlayerColor color) {
+      for(int x = 0; x < 8; ++x) {
+         for(int y = 0; y < 8; ++y) {
+            if(havePiece(x, y) 
+                    && getPiece(x, y).color() == color
+                    && getPiece(x, y) instanceof King
+                    ) {
+               return caseInCheck(new Case(x, y), color);
+            }
+         }
+      }
+      return true;
+   }
+   boolean caseInCheck(Case c, PlayerColor color) { // couleur du roi
+      for(int x = 0; x < 8; ++x) {
+         for(int y = 0; y < 8; ++y) {
+            if(havePiece(x, y) && getPiece(x, y).color() != color) {
+               getPiece(x, y).adversaryCheck(this, c);
+            }
+         }
+      }
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public Board clone() {
+      Board board = null;
+      try {
+         board = (Board) super.clone();
+      } catch (CloneNotSupportedException e) { }
+      return board;
+   }
+   
+   
    
 
 }

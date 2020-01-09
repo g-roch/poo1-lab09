@@ -13,7 +13,7 @@ import java.util.List;
  * @author Cassandre Wojciechowski
  * @author Gabriel Roch 
  */
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
    private PlayerColor color;
    //protected int x; 
    //protected int y; 
@@ -34,8 +34,13 @@ public abstract class Piece {
    /**
     * Indique si cette pièce mets en échec l'adversaire
     */
-   public boolean adversaryCheck() {
-      throw new UnsupportedOperationException("Not supported yet."); 
+   public boolean adversaryCheck(Board board, Case c) {
+      ListCase moveList = moveList(board, null, c);
+      for(Case destinationCase : moveList) {
+         if(destinationCase.equals(c))
+            return true;
+      }
+      return false;
    }
 
    /**
@@ -67,7 +72,16 @@ public abstract class Piece {
    public ListCase possibleMove(Board board, Move lastMove, Case c) { 
       //throw new UnsupportedOperationException("Not supported yet."); 
       // TODO
-      return moveList(board, lastMove, c);
+      ListCase moveList = moveList(board, lastMove, c);
+      ListCase possibleMove = new ListCase();
+      for(Case destinationCase : moveList) {
+         Board tmpBoard = board.clone();
+         tmpBoard.getPiece(c).moveList(tmpBoard, lastMove, destinationCase);
+         if(!tmpBoard.kingInCheck(color)) {
+            possibleMove.add(destinationCase);
+         }
+      }
+      return possibleMove;
    }
 
    ///**
@@ -86,4 +100,15 @@ public abstract class Piece {
       board.setPiece(move.to(), this);
       board.setPiece(move.from(), null);
    }
+
+   @Override
+   protected Piece clone() {
+      Piece piece = null;
+      try {
+         piece = (Piece) super.clone();
+      } catch (CloneNotSupportedException e) { }
+      return piece;
+   }
+   
+   
 }

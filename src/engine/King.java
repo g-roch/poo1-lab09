@@ -13,27 +13,40 @@ import java.util.LinkedList;
  * Roi
  */
 public class King extends Piece {
+   
+   private boolean moved;
+   
    public King(PlayerColor color) {
       super(color);
+      moved = false;
+   }
+   
+   private int baseLine() {
+      if(color() == PlayerColor.WHITE)
+         return 0;
+      else
+         return 7;
    }
 
-   private boolean canCastlingShort() {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   private boolean canCastling(Board board, int rookX, int bishopX) {
+      return !moved
+              && board.havePiece(rookX, baseLine())
+              && board.getPiece(rookX, baseLine()) instanceof Rook
+              && !((Rook) board.getPiece(rookX, baseLine())).haveMoved()
+              && !board.caseInCheck(new Case(bishopX, baseLine()), color())
+              && !board.caseInCheck(new Case(4, baseLine()), color())
+              ;
    }
-   private boolean canCastlingLong() {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   private boolean canCastlingShort(Board board) {
+      return canCastling(board, 7, 5);
+   }
+   private boolean canCastlingLong(Board board) {
+      return canCastling(board, 0, 3);
    }
 
    @Override
    public String letter() {
       return "K";
-   }
-   @Override
-   public String letterWithMove() {
-      String ret = super.letterWithMove();
-      if(canCastlingLong()) ret = "+"+ret;
-      if(canCastlingShort()) ret += "+";
-      return ret;
    }
    @Override
    protected ListCase moveList(Board board, Move lastMove, Case c) {
@@ -48,13 +61,29 @@ public class King extends Piece {
       list.addIfValidCase(c.x()+1, c.y()  );
       list.addIfValidCase(c.x()+1, c.y()+1);
 
-      if(canCastlingShort()) list.addIfValidCase(5, c.y());
-      if(canCastlingLong())  list.addIfValidCase(2, c.y());
+      if(canCastlingShort(board)) list.add(5, c.y());
+      if(canCastlingLong(board))  list.add(2, c.y());
       return list;
    }
+
+   @Override
+   public ListCase possibleMove(Board board, Move lastMove, Case c) {
+      //return super.possibleMove(board, lastMove, c); //To change body of generated methods, choose Tools | Templates.
+   }
+   
+   
+   
    @Override
    public chess.PieceType type() {
       return PieceType.KING; 
    }
+
+   @Override
+   public void move(Board board, Move move) {
+      moved = true;
+      super.move(board, move); //To change body of generated methods, choose Tools | Templates.
+   }
+   
+   
 }
 

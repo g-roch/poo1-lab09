@@ -46,7 +46,10 @@ Besoin:
    @Override
    public boolean move(int fromX, int fromY, int toX, int toY) {
       Move m = new Move(new Case(fromX, fromY), new Case(toX, toY));
+
+      // TODO: Supprimer ligne
       if(board.havePiece(m.from())) player = board.getPiece(m.from()).color();
+
       Move l = board.move(lastMove, player, m);
       if(l == null) 
          return false;
@@ -56,6 +59,11 @@ Besoin:
       checkPromotion();
       
       showBoard();
+      
+      if(player == PlayerColor.WHITE)
+         player = PlayerColor.BLACK;
+      else
+         player = PlayerColor.WHITE;
       
       return true;
    }
@@ -108,7 +116,23 @@ Besoin:
             promotion = board.getPiece(x, y) instanceof Pawn;
          }
          if(promotion) {
-            askUser(view, "Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
+            String type = askUser(view, "Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
+            switch (type) {
+               case "Tour":
+                  board.setPiece(x, y, new Rook(board.getPiece(x, y).color()));
+                  break;
+               case "Cavalier":
+                  board.setPiece(x, y, new Knight(board.getPiece(x, y).color()));
+                  break;
+               case "Fou":
+                  board.setPiece(x, y, new Bishop(board.getPiece(x, y).color()));
+                  break;
+               case "Dame":
+                  board.setPiece(x, y, new Queen(board.getPiece(x, y).color()));
+                  break;
+               default:
+                  break;
+            }
             
          }
             
@@ -132,13 +156,13 @@ Besoin:
       
    }
 
-   private void askUser(ChessView view, String titre, String question, String[] answers) {
+   private String askUser(ChessView view, String titre, String question, String[] answers) {
       ChessView.UserChoice t[] = new ChessView.UserChoice[answers.length];
       
       for(int i = 0; i < answers.length; ++i) {
          t[i] = new UserChoice(answers[i]);
       }
-      view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", t);
+      return view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", t).toString();
    }
 
 }
