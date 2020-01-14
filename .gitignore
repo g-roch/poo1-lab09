@@ -1,3 +1,7 @@
 /target/
 /build/
 /dist/
+/.idea/
+/.metadata/
+/lab09.iml
+/out/

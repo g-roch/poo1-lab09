@@ -1,7 +1,3 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
@@ -36,18 +32,15 @@ public class Rook extends PieceLongRange {
    }
 
    @Override
-   public String letter() {
-      return "R";
-   }
-   @Override
    public chess.PieceType type() {
       return PieceType.ROOK; 
    }
 
    @Override
-   public void move(Board board, Move move) {
+   public boolean move(Board board, Move move) {
       moved = true;
-      super.move(board, move);
+      return super.move(board, move);
+
    }
 
    

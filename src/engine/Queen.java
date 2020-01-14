@@ -1,7 +1,3 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
@@ -31,10 +27,6 @@ public class Queen extends PieceLongRange {
       return orientations;
    }
 
-   @Override
-   public String letter() {
-      return "Q";
-   }
    @Override
    public chess.PieceType type() {
       return PieceType.QUEEN; 

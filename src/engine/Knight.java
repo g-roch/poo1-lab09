@@ -1,13 +1,7 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * Cavalier
@@ -18,20 +12,16 @@ public class Knight extends Piece {
    }
 
    @Override
-   public String letter() {
-      return "N";
-   }
-   @Override
-   protected ListCase moveList(Board board, Move lastMove, Case c) {
+   protected ListCase moveList(Board board, Case c) {
       ListCase list = new ListCase();
-      list.addIfValidCase(c.x()-2, c.y()-1);
-      list.addIfValidCase(c.x()-1, c.y()-2);
-      list.addIfValidCase(c.x()+1, c.y()-2);
-      list.addIfValidCase(c.x()+2, c.y()-1);
-      list.addIfValidCase(c.x()-2, c.y()+1);
-      list.addIfValidCase(c.x()-1, c.y()+2);
-      list.addIfValidCase(c.x()+1, c.y()+2);
-      list.addIfValidCase(c.x()+2, c.y()+1);
+      list.addIfValidCase(c.getX()-2, c.getY()-1);
+      list.addIfValidCase(c.getX()-1, c.getY()-2);
+      list.addIfValidCase(c.getX()+1, c.getY()-2);
+      list.addIfValidCase(c.getX()+2, c.getY()-1);
+      list.addIfValidCase(c.getX()-2, c.getY()+1);
+      list.addIfValidCase(c.getX()-1, c.getY()+2);
+      list.addIfValidCase(c.getX()+1, c.getY()+2);
+      list.addIfValidCase(c.getX()+2, c.getY()+1);
       return list;
    }
    @Override

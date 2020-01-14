@@ -1,12 +1,7 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import java.util.List;
 
 /**
  * Classe permettant de manipuler une piece de l'échiquiers
@@ -15,15 +10,9 @@ import java.util.List;
  */
 public abstract class Piece implements Cloneable {
    private PlayerColor color;
-   //protected int x; 
-   //protected int y; 
-
-   //private final String colorLetter[] = {"W", "B"};
 
    protected Piece(PlayerColor color/*, int x, int y*/) {
       this.color = color;
-      //this.x = x;
-      //this.y = y;
    }
 
    public PlayerColor color() {
@@ -35,7 +24,7 @@ public abstract class Piece implements Cloneable {
     * Indique si cette pièce mets en échec la case kingCase
     */
    public boolean adversaryCheck(Board board, Case kingCase, Case selfCase) {
-      ListCase moveList = moveList(board, null, selfCase);
+      ListCase moveList = moveList(board, selfCase);
       for(Case destinationCase : moveList) {
          if(destinationCase.equals(kingCase))
             return true;
@@ -44,33 +33,16 @@ public abstract class Piece implements Cloneable {
    }
 
    /**
-    * Retourne une lettre représentant le type de la piece
-    */
-   public abstract String letter();
-
-   /**
-    * Retourne une chaine de caractére représentant les mouvement permit par la piece
-    * (Type de piece et s'il peut prendre en passant / Roqué)
-    * @see #letter()
-    */
-   protected String letterWithMove() {
-      if(color == PlayerColor.WHITE)
-         return "W" + letter();
-      else
-         return "B" + letter();
-   }
-
-   /**
     * Retourne la liste de case de destination autorisé pour cette pièce,
     * Indépendement de la mise en échecs de son propre roi.
     */
-   protected abstract ListCase moveList(Board board, Move lastMove, Case c);
+   protected abstract ListCase moveList(Board board, Case c);
 
    /**
     * Retourne la liste de movement autorisé par les régles.
     */
-   public ListCase possibleMove(Board board, Move lastMove, Case c) { 
-      ListCase moveList = moveList(board, lastMove, c);
+   public ListCase possibleMove(Board board, Case c) {
+      ListCase moveList = moveList(board, c);
       ListCase possibleMove = new ListCase();
       for(Case destinationCase : moveList) {
          Board tmpBoard = new Board(board);
@@ -94,9 +66,10 @@ public abstract class Piece implements Cloneable {
    /**
     * Déplace la pièce (Ne vérifie pas que le mouvement est valide)
     */
-   public void move(Board board, Move move) {
+   public boolean move(Board board, Move move) {
       board.setPiece(move.to(), this);
       board.setPiece(move.from(), null);
+      return true;
    }
 
    @Override

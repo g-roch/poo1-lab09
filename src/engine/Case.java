@@ -12,52 +12,75 @@ import java.util.Objects;
  * @author Gabriel Roch 
  */
 class Case {
-    private int x;
-    private int y;
     /**
-    * @exception RuntimeException asdf
-    */
-    public Case(int x, int y) throws RuntimeException {
+     * Coornonée horizontal dans l'échiquier (0 à gauche)
+     */
+    private int x;
+    /**
+     * Coornonée vertical dans l'échiquier (0 en bas)
+     */
+    private int y;
+
+    public int getX() { return x; }
+    public int getY() { return y; }
+
+    /**
+     * @param x Coordonnée horizontal
+     * @param y Coordonnée vertical
+     */
+    public Case(int x, int y) {
         Objects.checkIndex(x, 8);
         Objects.checkIndex(y, 8);
         this.x = x;
         this.y = y;
     }
 
-    public static boolean validCoord(int x, int y) {
-        return x >= 0 && x < 8 && y >= 0 && y < 8;
-    }
-
-    public Case add(int x, int y) throws RuntimeException {
+    /**
+     * Retourne une nouvelle Case avec le décalage x, y demandé
+     * @param x Décalage horizontal
+     * @param y Décalage vertical
+     * @return La nouvelle case
+     */
+    public Case add(int x, int y) {
         return new Case(this.x + x, this.y + y);
     }
     public Case add(Integer orientation[]) {
         if (orientation.length != 2) throw new RuntimeException("Orientation need 2 elems");
         return add(orientation[0], orientation[1]);
     }
+
+    /**
+     * Test si un décalage donne une case valide
+     * @param x Décalage horizontal
+     * @param y Décalage vertical
+     * @return true si le décalage tombe sur une case valide
+     */
     public boolean validAdd(int x, int y) {
-        return validCoord(this.x + x, this.y + y);
+        return Board.validCoord(this.x + x, this.y + y);
     }
     public boolean validAdd(Integer orientation[]) {
         if (orientation.length != 2) throw new RuntimeException("Orientation need 2 elems");
         return validAdd(orientation[0], orientation[1]);
     }
 
-    public int x() { return x; }
-    public int y() { return y; }
 
+    /**
+     * Compare les coordonnées de deux Case
+     * @param o Case à comparer
+     * @return
+     */
     public boolean equals(Object o) {
         return o == this
                 || o != null
-                && o.getClass() == getClass()
+                && o instanceof Case
                 && ((Case) o).x == x && ((Case) o).y == y;
     }
 
+
+    // TODO à supprimer
    @Override
    public String toString() {
-      
       return "Case("+((char)(x+65))+(y+1)+")";
-//      return "Case("+x+","+y+")";
    }
     
     

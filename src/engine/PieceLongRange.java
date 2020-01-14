@@ -1,12 +1,7 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PlayerColor;
 import java.util.List;
-import java.util.LinkedList;
 
 
 public abstract class PieceLongRange extends Piece { // Piece long-distance
@@ -19,7 +14,7 @@ public abstract class PieceLongRange extends Piece { // Piece long-distance
    public abstract List<Integer[]> getOrientations();
 
    @Override
-   protected ListCase moveList(Board board, Move lastMove, Case c) {
+   protected ListCase moveList(Board board, Case c) {
       ListCase list = new ListCase();
       List<Integer[]> orientations = getOrientations();
       for(Integer[] orientation : orientations) {

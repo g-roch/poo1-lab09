@@ -28,10 +28,6 @@ public class Bishop extends PieceLongRange {
    }
 
    @Override
-   public String letter() {
-      return "B";
-   }
-   @Override
    public chess.PieceType type() {
       return PieceType.BISHOP; 
    }

@@ -1,7 +1,3 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
@@ -11,14 +7,20 @@ import chess.PlayerColor;
  * Roi
  */
 public class King extends Piece {
-   
+
+   /**
+    * Indique si le roi a déjà effectué un mouvement
+    */
    private boolean moved;
    
    public King(PlayerColor color) {
       super(color);
       moved = false;
    }
-   
+
+   /**
+    * @return La ligne de base du roi
+    */
    private int baseLine() {
       if(color() == PlayerColor.WHITE)
          return 0;
@@ -26,6 +28,12 @@ public class King extends Piece {
          return 7;
    }
 
+   /**
+    * Determine si le roque avec la tour rookX est possible
+    * @param board Plateau de jeux
+    * @param rookX Tour avec laquel roquer
+    * @return true si le roque est permis
+    */
    private boolean canCastling(Board board, int rookX) {
       int neighbourX = (rookX == 0 ? 3 : 5);
       Case rookCase = new Case(rookX, baseLine());
@@ -39,12 +47,29 @@ public class King extends Piece {
               && !board.caseInCheck(kingCase, color())
               ;
    }
+   /**
+    * Determine si le petit roque est possible
+    * @param board Plateau de jeux
+    * @return true si le roque est permis
+    */
    private boolean canCastlingShort(Board board) {
       return canCastling(board, 7);
    }
+   /**
+    * Determine si le grand roque est possible
+    * @param board Plateau de jeux
+    * @return true si le roque est permis
+    */
    private boolean canCastlingLong(Board board) {
       return canCastling(board, 0);
    }
+
+
+   /**
+    * Effectue un Roque
+    * @param board Plateau de jeux
+    * @param rookX Tour avec laquel roquer
+    */
    private void castling(Board board, int rookX) {
       int direction = (rookX == 0 ? -1 : 1);
       Case rookCase = new Case(rookX, baseLine());
@@ -58,30 +83,26 @@ public class King extends Piece {
    }
 
    @Override
-   public String letter() {
-      return "K";
-   }
-   @Override
-   protected ListCase moveList(Board board, Move lastMove, Case c) {
+   protected ListCase moveList(Board board, Case c) {
       ListCase list = new ListCase();
-      // TODO
-      list.addIfValidCase(c.x()-1, c.y()-1);
-      list.addIfValidCase(c.x()-1, c.y()  );
-      list.addIfValidCase(c.x()-1, c.y()+1);
-      list.addIfValidCase(c.x()  , c.y()-1);
-      list.addIfValidCase(c.x()  , c.y()+1);
-      list.addIfValidCase(c.x()+1, c.y()-1);
-      list.addIfValidCase(c.x()+1, c.y()  );
-      list.addIfValidCase(c.x()+1, c.y()+1);
+
+      list.addIfValidCase(c.getX()-1, c.getY()-1);
+      list.addIfValidCase(c.getX()-1, c.getY()  );
+      list.addIfValidCase(c.getX()-1, c.getY()+1);
+      list.addIfValidCase(c.getX()  , c.getY()-1);
+      list.addIfValidCase(c.getX()  , c.getY()+1);
+      list.addIfValidCase(c.getX()+1, c.getY()-1);
+      list.addIfValidCase(c.getX()+1, c.getY()  );
+      list.addIfValidCase(c.getX()+1, c.getY()+1);
 
       return list;
    }
 
    @Override
-   public ListCase possibleMove(Board board, Move lastMove, Case c) {
-      ListCase list = moveList(board, lastMove, c);
-      if(canCastlingShort(board)) list.add(6, c.y());
-      if(canCastlingLong(board))  list.add(2, c.y());
+   public ListCase possibleMove(Board board, Case c) {
+      ListCase list = moveList(board, c);
+      if(canCastlingShort(board)) list.add(6, c.getY());
+      if(canCastlingLong(board))  list.add(2, c.getY());
       ListCase possibleMove = new ListCase();
       for(Case destinationCase : list) {
          Board tmpBoard = new Board(board);
@@ -91,7 +112,6 @@ public class King extends Piece {
          }
       }
       return possibleMove;
-      //return super.possibleMove(board, lastMove, c); //To change body of generated methods, choose Tools | Templates.
    }
    
    
@@ -102,15 +122,16 @@ public class King extends Piece {
    }
 
    @Override
-   public void move(Board board, Move move) {
-      if(move.from().x() == 4 && move.to().x() == 6) {
+   public boolean move(Board board, Move move) {
+      if(move.from().getX() == 4 && move.to().getX() == 6) {
          castling(board, 7);
-      } else if(move.from().x() == 4 && move.to().x() == 2) {
+      } else if(move.from().getX() == 4 && move.to().getX() == 2) {
          castling(board, 0);
       } else {
          super.move(board, move);
       }
       moved = true;
+      return true;
    }
 
 

@@ -1,16 +1,10 @@
-/*
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package engine;
 
 import chess.ChessView;
 import chess.PlayerColor;
 
 /**
- *
+ * Controleur du jeux d'échecs
  * @author Cassandre Wojciechowski
  * @author Gabriel Roch 
  */
@@ -21,20 +15,15 @@ public class Chess implements chess.ChessController {
     */
    protected ChessView view;
 
+   /**
+    * Plateau de jeu
+    */
    private Board board;
-   
-   private Move lastMove;
-   
-   private PlayerColor player = PlayerColor.WHITE;
 
-   /*
-Besoin:
-- Savoir ou est quel piece.
-- Savoir quel mouvement est autorisé pour quel piece
-- Vérifier les "Echec" "Echec et mat"
-- (( Vérifier les PAT ))
-- Savoir quel joueur doit jouer
-*/
+   /**
+    * Joueur auquel c'est le tour de jouer
+    */
+   private PlayerColor player = PlayerColor.WHITE;
 
    @Override
    public void start(ChessView view) {
@@ -46,37 +35,48 @@ Besoin:
    @Override
    public boolean move(int fromX, int fromY, int toX, int toY) {
 
-      Move m = new Move(new Case(fromX, fromY), new Case(toX, toY));
-
-      // TODO: Supprimer ligne
-      if(board.havePiece(m.from())) player = board.getPiece(m.from()).color();
-
-      Move l = board.move(lastMove, player, m);
-      if(l != null) {
-         lastMove = l;
-         if(player == PlayerColor.WHITE)
-            player = PlayerColor.BLACK;
-         else
-            player = PlayerColor.WHITE;
-      }
+      Move move = new Move(new Case(fromX, fromY), new Case(toX, toY));
       
-      String message = "";
+      if (!board.move(player, move)) {
+         return false;
+      }
 
-      checkPromotion();
-      message += checkCheck();
-      message += checkNull(); 
-      message += checkMate(); 
-     
-      if(player == PlayerColor.WHITE)
-         message = "C'est aux blancs ! "+message;
-      else
-         message = "C'est aux noirs ! "+message;
+      switchPlayer();
+      pawnPromotion();
+
+
+      boolean inCheck = board.kingInCheck(player);
+      boolean cannotMove = board.countPossibleMoves(player) == 0;
+
+      if (cannotMove && inCheck) {
+         view.displayMessage("Check mat !");
+      } else if(cannotMove) { // implicit !inCheck
+         view.displayMessage("Pat !");
+      } else if(inCheck) {
+         view.displayMessage("Check !");
+      } else if(player == PlayerColor.WHITE) {
+         view.displayMessage("C'est aux blancs !");
+      } else {
+         view.displayMessage("C'est aux noirs !");
+      }
+
       showBoard();
-      view.displayMessage(message);
       return true;
    }
 
+   /**
+    * Change le joueur qui doit jouer
+    */
+   private void switchPlayer() {
+      if(player == PlayerColor.WHITE)
+         player = PlayerColor.BLACK;
+      else
+         player = PlayerColor.WHITE;
+   }
 
+   /**
+    * Mets à jour le plateau de jeu pour l'affichage
+    */
    private void showBoard() {
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
@@ -88,131 +88,91 @@ Besoin:
          }
       }
    }
+
    @Override
    public void newGame() {
       board = new Board();
       // Nettoye le plateau
       showBoard();
-
-      //view.displayMessage("Bonjour joueur");
-      //view.removePiece(7, 7);
-      //System.err.println("Ask user");
-      //view.askUser("Test ask", "Maquest", new ChessView.UserChoice() {
-      //	@Override
-      //	public String textValue() {
-      //		return "A";
-      //	}
-      //	public String toString() {
-      //		return "a";
-      //	}
-      //}, new ChessView.UserChoice() {
-      //	@Override
-      //	public String textValue() {
-      //		return "B";
-      //	}
-      //	public String toString() {
-      //		return "b";
-      //	}
-      //});
    }
 
-   private void checkPromotion() {
+   /**
+    * Éffectue la promotion des pions se trouvant sur la prmière et dernière ligne
+    * @apiNote Cette fonction ne traite que le premier pion trouvé, dans une partie normale,
+    * il ne peut jamais avoir plus d'un pion sur la première ou dernière ligne
+    */
+   private void pawnPromotion() {
       for(int x = 0; x < 8; ++x) {
-         int y = 0;
+         Case c = new Case(x, 0);
          boolean promotion = false;
-         promotion = board.getPiece(x, y) instanceof Pawn;
+         promotion = board.getPiece(c) instanceof Pawn;
          if(!promotion) {
-            y = 7;
-            promotion = board.getPiece(x, y) instanceof Pawn;
+            c = new Case(x, 7);
+            promotion = board.getPiece(c) instanceof Pawn;
          }
          if(promotion) {
-            String type = askUser(view, "Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
+            String type = askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
             switch (type) {
                case "Tour":
-                  board.setPiece(x, y, new Rook(board.getPiece(x, y).color()));
+                  board.setPiece(c, new Rook(board.getPiece(c).color()));
                   break;
                case "Cavalier":
-                  board.setPiece(x, y, new Knight(board.getPiece(x, y).color()));
+                  board.setPiece(c, new Knight(board.getPiece(c).color()));
                   break;
                case "Fou":
-                  board.setPiece(x, y, new Bishop(board.getPiece(x, y).color()));
+                  board.setPiece(c, new Bishop(board.getPiece(c).color()));
                   break;
                case "Dame":
-                  board.setPiece(x, y, new Queen(board.getPiece(x, y).color()));
+                  board.setPiece(c, new Queen(board.getPiece(c).color()));
                   break;
-               default:
-                  break;
-            }
-            
-         }
-            
-      }
-//      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-   }
-
-   private String checkCheck() {
-      boolean whiteKingInCheck = board.kingInCheck(PlayerColor.WHITE);
-      boolean blackKingInCheck = board.kingInCheck(PlayerColor.BLACK);
-      if(whiteKingInCheck && blackKingInCheck)
-         return "Échec aux blancs et aux noirs ";
-      else if(blackKingInCheck)
-         return "Échec aux noirs ";
-      else if(whiteKingInCheck)
-         return "Échec aux blancs ";
-      return "";
-   }
-
-   private String checkNull() {
-      if(countPossibleMoves() == 0 && !board.kingInCheck(player)){
-         return "Pat ";
-      }
-      return "";
-   }
-   
-   
-   private String checkMate() {
-      if(countPossibleMoves() == 0 && board.kingInCheck(player)){
-         return "Check mate ";
-      }
-      return "";
-   }
-   
-   private int countPossibleMoves(){
-      int countMoves = 0; 
-      for(int x = 0; x < 8; ++x){
-         for(int y = 0; y < 8; ++y){
-            Case c = new Case(x, y);
-            if(board.havePiece(c) && board.getPiece(c).color() == player){
-               countMoves += board.getPiece(c).possibleMove(board, lastMove, c).size();
             }
          }
       }
-      return countMoves; 
    }
-   
+
+
+   /**
+    * Classe permettant la création d'un choix proposé à l'utilisateur
+    */
    private class UserChoice implements ChessView.UserChoice {
       private String value;
       UserChoice(String value) {
          this.value = value;
       }
+
+      /**
+       * Methode requise par l'interface
+       * @return La chaîne à afficher
+       */
       @Override
       public String textValue() {
          return value;
       }
+
+      /**
+       * Méthode réelement utiliser pour exposer le texte à l'utilisateur
+       * @return La chaîne à afficher
+       */
       @Override
       public String toString() {
          return value;
       }
-      
    }
 
-   private String askUser(ChessView view, String titre, String question, String[] answers) {
-      ChessView.UserChoice t[] = new ChessView.UserChoice[answers.length];
+   /**
+    * Pose une question à choix à l'utilisateur
+    * @param titre Titre de la fenêtre
+    * @param question Question à poser
+    * @param answers Liste des réponses possible
+    * @return La réponse choisie par l'utilisateur
+    */
+   private String askUser(String titre, String question, String[] answers) {
+      ChessView.UserChoice userChoices[] = new ChessView.UserChoice[answers.length];
       
       for(int i = 0; i < answers.length; ++i) {
-         t[i] = new UserChoice(answers[i]);
+         userChoices[i] = new UserChoice(answers[i]);
       }
-      return view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", t).toString();
+      return view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", userChoices).toString();
    }
 
 }
