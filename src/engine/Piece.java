@@ -11,11 +11,11 @@ import chess.PlayerColor;
 public abstract class Piece implements Cloneable {
    private PlayerColor color;
 
-   protected Piece(PlayerColor color/*, int x, int y*/) {
+   protected Piece(PlayerColor color) {
       this.color = color;
    }
 
-   public PlayerColor color() {
+   public PlayerColor getColor() {
       return color;
    }
 
@@ -54,23 +54,20 @@ public abstract class Piece implements Cloneable {
       return possibleMove;
    }
 
-   ///**
-   // * Affiche la pièce
-   // */
-   //public void putPiece() { view.putPiece(this.type(), color, 0, 0);         }
-   /**
-    * Retourne le type de la piece pour l'affichage
-    */
-   public abstract PieceType type();
 
    /**
     * Déplace la pièce (Ne vérifie pas que le mouvement est valide)
     */
    public boolean move(Board board, Move move) {
-      board.setPiece(move.to(), this);
-      board.setPiece(move.from(), null);
+      board.setPiece(move.getTo(), this);
+      board.setPiece(move.getFrom(), null);
       return true;
    }
+
+   /**
+    * Retourne le type de la piece pour l'affichage
+    */
+   public abstract PieceType getType();
 
    @Override
    public Piece clone() {

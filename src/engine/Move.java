@@ -10,10 +10,10 @@ public class Move {
     */
    private Case to;
 
-   public Case from() {
+   public Case getFrom() {
       return from;
    }
-   public Case to() {
+   public Case getTo() {
       return to;
    }
 

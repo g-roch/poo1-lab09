@@ -2,7 +2,9 @@ package engine;
 
 import chess.PlayerColor;
 
-public class Board {
+import java.util.Iterator;
+
+public class Board /* implements Iterable<Case> */ {
 
    /**
     * Plateu de jeux
@@ -45,16 +47,16 @@ public class Board {
 
    /**
     * Contructeur par copie
-    * @param b Board à copier
+    * @param board Board à copier
     */
-   public Board(Board b) {
+   public Board(Board board) {
       gameBoard = new Piece[8][8];
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
-            if(b.gameBoard[x][y] == null)
+            if(board.gameBoard[x][y] == null)
                gameBoard[x][y] = null;
             else
-               gameBoard[x][y] = b.gameBoard[x][y].clone();
+               gameBoard[x][y] = board.gameBoard[x][y].clone();
          }
       }
    }
@@ -78,15 +80,15 @@ public class Board {
    public boolean move(PlayerColor color, Move move) {
       
       // Vérifie que la pièce à déplacer appartient bien au joueur
-      if(!havePiece(move.from()) || getPiece(move.from()).color() != color)
+      if(!havePiece(move.getFrom()) || getPiece(move.getFrom()).getColor() != color)
          return false;
 
       
       // Vérifie que la destination se trouve dans les destination possible de la piece
-      ListCase listPossibleMove = getPiece(move.from()).possibleMove(this, move.from());
+      ListCase listPossibleMove = getPiece(move.getFrom()).possibleMove(this, move.getFrom());
       boolean possibleMove = false;
       for(Case c : listPossibleMove) {
-         if (c.equals(move.to()))
+         if (c.equals(move.getTo()))
             possibleMove = true;
       }
 
@@ -95,10 +97,10 @@ public class Board {
          return false;
 
       // Si la destination est occupée, elle doit être de la couleur adverse
-      if(havePiece(move.to()) && getPiece(move.to()).color() == color)
+      if(havePiece(move.getTo()) && getPiece(move.getTo()).getColor() == color)
          return false;
 
-      if(getPiece(move.from()).move(this, move)) {
+      if(getPiece(move.getFrom()).move(this, move)) {
          lastMove = move;
          return true;
       } else {
@@ -111,7 +113,7 @@ public class Board {
     * @param c Case à tester
     * @return true s'il y a une piece sur la case
     */
-   boolean havePiece(Case c) {
+   public boolean havePiece(Case c) {
       return getPiece(c) != null;
    }
 
@@ -120,7 +122,7 @@ public class Board {
     * @param c Case à tester
     * @return La piece de la case ou null si la case est vide.
     */
-   Piece getPiece(Case c) {
+   public Piece getPiece(Case c) {
       return gameBoard[c.getX()][c.getY()];
    }
 
@@ -129,7 +131,7 @@ public class Board {
     * @param c Case sur laquel la piece sera poser
     * @param p Piece à placer
     */
-   void setPiece(Case c, Piece p) {
+   public void setPiece(Case c, Piece p) {
       gameBoard[c.getX()][c.getY()] = p;
    }
 
@@ -139,15 +141,15 @@ public class Board {
     * @param color La couleur du roi à tester
     * @return true si le roi de couleur color est en échecs
     */
-   boolean kingInCheck(PlayerColor color) {
+   public boolean kingInCheck(PlayerColor color) {
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
             Case c = new Case(x, y);
             if(havePiece(c)
-                    && getPiece(c).color() == color
+                    && getPiece(c).getColor() == color
                     && getPiece(c) instanceof King
                     ) {
-               return caseInCheck(new Case(x, y), color);
+               return caseTargeted(new Case(x, y), color);
             }
          }
       }
@@ -161,12 +163,12 @@ public class Board {
     * @param color La couleur du roi à tester
     * @return true si la case est attaquée
     */
-   boolean caseInCheck(Case c, PlayerColor color) { // couleur du roi
+   public boolean caseTargeted(Case c, PlayerColor color) { // couleur du roi
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
             Case selfCase = new Case(x, y);
             if(havePiece(selfCase)
-                    && getPiece(selfCase).color() != color
+                    && getPiece(selfCase).getColor() != color
                     && getPiece(selfCase).adversaryCheck(this, c, selfCase)
             ) {
                return true;
@@ -181,17 +183,41 @@ public class Board {
     * @param player Joueur à tester
     * @return Le nombre de mouvement possible pour le joueur player
     */
-   int countPossibleMoves(PlayerColor player){
+   public int countPossibleMoves(PlayerColor player){
       int countMoves = 0;
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
             Case c = new Case(x, y);
-            if(havePiece(c) && getPiece(c).color() == player) {
+            if(havePiece(c) && getPiece(c).getColor() == player) {
                countMoves += getPiece(c).possibleMove(this, c).size();
             }
          }
       }
       return countMoves;
    }
+/* TODO
+   @Override
+   public Iterator<Case> iterator() {
+      return new Iterator<Case>() {
+         private int x = 0;
+         private int y = 0;
 
+         @Override
+         public boolean hasNext() {
+            return x != 7 || y != 7;
+         }
+
+         @Override
+         public Case next() {
+            Case c = new Case(x, y);
+            ++x;
+            if(x >= 8) {
+               x = 0;
+               ++y;
+            }
+            return c;
+         }
+      };
+   }
+ */
 }

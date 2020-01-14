@@ -28,7 +28,7 @@ public class Bishop extends PieceLongRange {
    }
 
    @Override
-   public chess.PieceType type() {
+   public PieceType getType() {
       return PieceType.BISHOP; 
    }
 }

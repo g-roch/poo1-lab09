@@ -25,7 +25,7 @@ public class Knight extends Piece {
       return list;
    }
    @Override
-   public chess.PieceType type() {
+   public PieceType getType() {
       return PieceType.KNIGHT; 
    }
 }

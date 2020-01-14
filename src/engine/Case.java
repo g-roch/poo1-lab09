@@ -75,14 +75,6 @@ class Case {
                 && o instanceof Case
                 && ((Case) o).x == x && ((Case) o).y == y;
     }
-
-
-    // TODO à supprimer
-   @Override
-   public String toString() {
-      return "Case("+((char)(x+65))+(y+1)+")";
-   }
-    
     
 }
 

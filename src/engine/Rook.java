@@ -32,7 +32,7 @@ public class Rook extends PieceLongRange {
    }
 
    @Override
-   public chess.PieceType type() {
+   public PieceType getType() {
       return PieceType.ROOK; 
    }
 

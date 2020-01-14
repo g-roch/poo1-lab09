@@ -28,7 +28,7 @@ public class Queen extends PieceLongRange {
    }
 
    @Override
-   public chess.PieceType type() {
+   public chess.PieceType getType() {
       return PieceType.QUEEN; 
    }
 }

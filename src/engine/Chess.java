@@ -13,7 +13,7 @@ public class Chess implements chess.ChessController {
    /**
     * Objet utiliser pour géré l'affichage à l'utilisateur.
     */
-   protected ChessView view;
+   private ChessView view;
 
    /**
     * Plateau de jeu
@@ -64,6 +64,13 @@ public class Chess implements chess.ChessController {
       return true;
    }
 
+   @Override
+   public void newGame() {
+      board = new Board();
+      // Nettoye le plateau
+      showBoard();
+   }
+
    /**
     * Change le joueur qui doit jouer
     */
@@ -82,18 +89,11 @@ public class Chess implements chess.ChessController {
          for(int y = 0; y < 8; ++y) {
             Case c = new Case(x, y);
             if(board.havePiece(c))
-               view.putPiece(board.getPiece(c).type(), board.getPiece(c).color(), x, y);
+               view.putPiece(board.getPiece(c).getType(), board.getPiece(c).getColor(), x, y);
             else
                view.removePiece(x, y);
          }
       }
-   }
-
-   @Override
-   public void newGame() {
-      board = new Board();
-      // Nettoye le plateau
-      showBoard();
    }
 
    /**
@@ -114,16 +114,16 @@ public class Chess implements chess.ChessController {
             String type = askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
             switch (type) {
                case "Tour":
-                  board.setPiece(c, new Rook(board.getPiece(c).color()));
+                  board.setPiece(c, new Rook(board.getPiece(c).getColor()));
                   break;
                case "Cavalier":
-                  board.setPiece(c, new Knight(board.getPiece(c).color()));
+                  board.setPiece(c, new Knight(board.getPiece(c).getColor()));
                   break;
                case "Fou":
-                  board.setPiece(c, new Bishop(board.getPiece(c).color()));
+                  board.setPiece(c, new Bishop(board.getPiece(c).getColor()));
                   break;
                case "Dame":
-                  board.setPiece(c, new Queen(board.getPiece(c).color()));
+                  board.setPiece(c, new Queen(board.getPiece(c).getColor()));
                   break;
             }
          }
@@ -161,12 +161,12 @@ public class Chess implements chess.ChessController {
 
    /**
     * Pose une question à choix à l'utilisateur
-    * @param titre Titre de la fenêtre
+    * @param title Titre de la fenêtre
     * @param question Question à poser
     * @param answers Liste des réponses possible
     * @return La réponse choisie par l'utilisateur
     */
-   private String askUser(String titre, String question, String[] answers) {
+   private String askUser(String title, String question, String[] answers) {
       ChessView.UserChoice userChoices[] = new ChessView.UserChoice[answers.length];
       
       for(int i = 0; i < answers.length; ++i) {

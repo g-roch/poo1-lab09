@@ -1,0 +1,16 @@
+
+ - Chaque type de prise (G et D)
+ - Promotion
+ - 2 Roques (voie libre, échecs case millieu, échecs, échecs case destination)
+ - Echecs
+ - Echecs mat
+ - Pat
+ - Avance 2 case Pion
+ - Avance 1 case pion
+ - Prise passant
+ - Prise diag pion
+ - Déplacement cavalier
+ - Déplacement tour, fou, reine
+ - Déplacement mettant le roi en échecs
+ - Déplacement roi
+ - 

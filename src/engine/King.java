@@ -18,15 +18,6 @@ public class King extends Piece {
       moved = false;
    }
 
-   /**
-    * @return La ligne de base du roi
-    */
-   private int baseLine() {
-      if(color() == PlayerColor.WHITE)
-         return 0;
-      else
-         return 7;
-   }
 
    /**
     * Determine si le roque avec la tour rookX est possible
@@ -43,8 +34,8 @@ public class King extends Piece {
               && board.havePiece(rookCase)
               && board.getPiece(rookCase) instanceof Rook
               && !((Rook) board.getPiece(rookCase)).haveMoved()
-              && !board.caseInCheck(neighbourCase, color())
-              && !board.caseInCheck(kingCase, color())
+              && !board.caseTargeted(neighbourCase, getColor())
+              && !board.caseTargeted(kingCase, getColor())
               ;
    }
    /**
@@ -64,6 +55,15 @@ public class King extends Piece {
       return canCastling(board, 0);
    }
 
+   /**
+    * @return La ligne de base du roi
+    */
+   private int baseLine() {
+      if(getColor() == PlayerColor.WHITE)
+         return 0;
+      else
+         return 7;
+   }
 
    /**
     * Effectue un Roque
@@ -107,7 +107,7 @@ public class King extends Piece {
       for(Case destinationCase : list) {
          Board tmpBoard = new Board(board);
          tmpBoard.getPiece(c).move(tmpBoard, new Move(c, destinationCase));
-         if(!tmpBoard.kingInCheck(color())) {
+         if(!tmpBoard.kingInCheck(getColor())) {
             possibleMove.add(destinationCase);
          }
       }
@@ -117,15 +117,15 @@ public class King extends Piece {
    
    
    @Override
-   public chess.PieceType type() {
+   public PieceType getType() {
       return PieceType.KING; 
    }
 
    @Override
    public boolean move(Board board, Move move) {
-      if(move.from().getX() == 4 && move.to().getX() == 6) {
+      if(move.getFrom().getX() == 4 && move.getTo().getX() == 6) {
          castling(board, 7);
-      } else if(move.from().getX() == 4 && move.to().getX() == 2) {
+      } else if(move.getFrom().getX() == 4 && move.getTo().getX() == 2) {
          castling(board, 0);
       } else {
          super.move(board, move);
@@ -133,11 +133,6 @@ public class King extends Piece {
       moved = true;
       return true;
    }
-
-
-   
-   
-   
    
 }
 
