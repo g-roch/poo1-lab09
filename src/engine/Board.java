@@ -4,10 +4,16 @@ import chess.PlayerColor;
 
 import java.util.Iterator;
 
+/**
+ * Plateau de jeu
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
+ */
+
 public class Board /* implements Iterable<Case> */ {
 
    /**
-    * Plateu de jeux
+    * Plateau de jeu
     */
    private Piece[][] gameBoard;
 
@@ -19,8 +25,12 @@ public class Board /* implements Iterable<Case> */ {
    public Move getLastMove() {
       return lastMove;
    }
-
+   
+   /**
+    * Initialisation et placement des pièces sur le plateau de jeu
+    */
    public Board() {
+      // Les pièces noires en haut du plateau
       gameBoard = new Piece[8][8];
       gameBoard[0][7] = new Rook(PlayerColor.BLACK);
       gameBoard[1][7] = new Knight(PlayerColor.BLACK);
@@ -33,6 +43,7 @@ public class Board /* implements Iterable<Case> */ {
       for (int i = 0; i < 8; ++i)
          gameBoard[i][6] = new Pawn(PlayerColor.BLACK);
       
+      // Les pièces blanches en bas du plateau
       gameBoard[0][0] = new Rook(PlayerColor.WHITE);
       gameBoard[1][0] = new Knight(PlayerColor.WHITE);
       gameBoard[2][0] = new Bishop(PlayerColor.WHITE);
@@ -62,20 +73,20 @@ public class Board /* implements Iterable<Case> */ {
    }
 
    /**
-    * @param x Coordonnée horizontal
-    * @param y Coordonnée vertical
-    * @return true si les coordonée sont valid
+    * @param x Coordonnée horizontale
+    * @param y Coordonnée verticale
+    * @return true si les coordonnées sont valides
     */
    public static boolean validCoord(int x, int y) {
       return x >= 0 && x < 8 && y >= 0 && y < 8;
    }
 
-
    /**
     * Effectue un mouvement
     * @param color Couleur du joueur qui joue
-    * @param move Mouvement à effectué
-    * @return Le mouvement effectué ou null si le mouvement était impossible ou interdit
+    * @param move Mouvement à effectuer
+    * @return Le mouvement effectué ou null si le mouvement était impossible ou 
+    *          interdit
     */
    public boolean move(PlayerColor color, Move move) {
       
@@ -83,9 +94,10 @@ public class Board /* implements Iterable<Case> */ {
       if(!havePiece(move.getFrom()) || getPiece(move.getFrom()).getColor() != color)
          return false;
 
-      
-      // Vérifie que la destination se trouve dans les destination possible de la piece
-      ListCase listPossibleMove = getPiece(move.getFrom()).possibleMove(this, move.getFrom());
+      // Vérifie que la destination se trouve dans les destinations possibles de la 
+      // pièce
+      ListCase listPossibleMove = 
+              getPiece(move.getFrom()).possibleMove(this, move.getFrom());
       boolean possibleMove = false;
       for(Case c : listPossibleMove) {
          if (c.equals(move.getTo()))
@@ -109,16 +121,16 @@ public class Board /* implements Iterable<Case> */ {
    }
 
    /**
-    * Determine s'il y a une piece sur une case donnée
+    * Détermine s'il y a une pièce sur une case donnée
     * @param c Case à tester
-    * @return true s'il y a une piece sur la case
+    * @return true s'il y a une pièce sur la case
     */
    public boolean havePiece(Case c) {
       return getPiece(c) != null;
    }
 
    /**
-    * Récupere la piece d'une case
+    * Récupere la pièce d'une case
     * @param c Case à tester
     * @return La piece de la case ou null si la case est vide.
     */
@@ -127,19 +139,18 @@ public class Board /* implements Iterable<Case> */ {
    }
 
    /**
-    * Pose un piece sur l'échiquier
-    * @param c Case sur laquel la piece sera poser
+    * Pose une pièce sur l'échiquier
+    * @param c Case sur laquelle la piece sera posée
     * @param p Piece à placer
     */
    public void setPiece(Case c, Piece p) {
       gameBoard[c.getX()][c.getY()] = p;
    }
 
-
    /**
-    * Détermine si une roi est en échec
+    * Détermine si un roi est en échec
     * @param color La couleur du roi à tester
-    * @return true si le roi de couleur color est en échecs
+    * @return true si le roi de couleur color est en échec
     */
    public boolean kingInCheck(PlayerColor color) {
       for(int x = 0; x < 8; ++x) {
@@ -155,7 +166,6 @@ public class Board /* implements Iterable<Case> */ {
       }
       return true;
    }
-
 
    /**
     * Teste si une case est attaquée par une autre pièce
@@ -179,9 +189,9 @@ public class Board /* implements Iterable<Case> */ {
    }
 
    /**
-    * Compte le nombre de mouvement possible pour un utilisateur
+    * Compte le nombre de mouvements possibles pour un utilisateur
     * @param player Joueur à tester
-    * @return Le nombre de mouvement possible pour le joueur player
+    * @return Le nombre de mouvements possibles pour le joueur player
     */
    public int countPossibleMoves(PlayerColor player){
       int countMoves = 0;
@@ -195,6 +205,7 @@ public class Board /* implements Iterable<Case> */ {
       }
       return countMoves;
    }
+   
 /* TODO
    @Override
    public Iterator<Case> iterator() {

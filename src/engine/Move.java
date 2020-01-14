@@ -1,10 +1,16 @@
 package engine;
 
+/**
+ * Gère le mouvement des pièces
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
+ */
 public class Move {
    /**
     * Case de départ du mouvement
     */
    private Case from;
+   
    /**
     * Case de destination du mouvement
     */
@@ -21,4 +27,5 @@ public class Move {
       this.from = from;
       this.to = to;
    }
+   
 }

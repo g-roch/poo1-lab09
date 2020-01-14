@@ -5,6 +5,8 @@ import chess.PlayerColor;
 
 /**
  * Roi
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
  */
 public class King extends Piece {
 
@@ -17,7 +19,6 @@ public class King extends Piece {
       super(color);
       moved = false;
    }
-
 
    /**
     * Determine si le roque avec la tour rookX est possible
@@ -38,17 +39,19 @@ public class King extends Piece {
               && !board.caseTargeted(kingCase, getColor())
               ;
    }
+   
    /**
     * Determine si le petit roque est possible
-    * @param board Plateau de jeux
+    * @param board Plateau de jeu
     * @return true si le roque est permis
     */
    private boolean canCastlingShort(Board board) {
       return canCastling(board, 7);
    }
+   
    /**
     * Determine si le grand roque est possible
-    * @param board Plateau de jeux
+    * @param board Plateau de jeu
     * @return true si le roque est permis
     */
    private boolean canCastlingLong(Board board) {
@@ -56,7 +59,8 @@ public class King extends Piece {
    }
 
    /**
-    * @return La ligne de base du roi
+    * Détermine la ligne de base du roi
+    * @return 0 ou 7
     */
    private int baseLine() {
       if(getColor() == PlayerColor.WHITE)
@@ -67,7 +71,7 @@ public class King extends Piece {
 
    /**
     * Effectue un Roque
-    * @param board Plateau de jeux
+    * @param board Plateau de jeu
     * @param rookX Tour avec laquel roquer
     */
    private void castling(Board board, int rookX) {
@@ -113,9 +117,7 @@ public class King extends Piece {
       }
       return possibleMove;
    }
-   
-   
-   
+      
    @Override
    public PieceType getType() {
       return PieceType.KING; 

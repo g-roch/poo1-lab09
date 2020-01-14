@@ -3,26 +3,29 @@ package engine;
 import java.util.LinkedList;
 
 /**
- * Gére une liste de Case
+ * Gère une liste de "Case"
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
  */
 public class ListCase extends LinkedList<Case> {
 
    /**
     * Ajoute une case
-    * @param x Coordonnée horizontal
-    * @param y Coordonnée vertical
+    * @param x Coordonnée horizontale
+    * @param y Coordonnée verticale
     */
    public void add(int x, int y) {
       add(new Case(x, y));
    }
 
    /**
-    * Ajoute une case si les coordonée fonrnie sont valide
-    * @param x Coordonnée horizontal
-    * @param y Coordonnée vertical
+    * Ajoute une case si les coordonnéee fournies sont valides
+    * @param x Coordonnée horizontale
+    * @param y Coordonnée verticale
     */
    public void addIfValidCase(int x, int y) {
       if(Board.validCoord(x, y))
          add(x, y);
    }
+   
 }

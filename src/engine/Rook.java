@@ -7,9 +7,14 @@ import java.util.LinkedList;
 
 /**
  * Tour
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
  */
 public class Rook extends PieceLongRange {
    
+   /**
+    * Indique si la tour a déjà effectué un mouvement
+    */
    private boolean moved;
    
    public Rook(PlayerColor color) {
@@ -20,7 +25,10 @@ public class Rook extends PieceLongRange {
    public boolean haveMoved() {
       return moved;
    }
-
+   
+   /**
+    * Indique dans quels sens la tour peut se déplacer
+    */
    @Override
    public List<Integer[]> getOrientations() {
       List<Integer[]> orientations = new LinkedList<>();
@@ -43,5 +51,4 @@ public class Rook extends PieceLongRange {
 
    }
 
-   
 }

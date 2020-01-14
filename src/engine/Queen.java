@@ -7,12 +7,17 @@ import java.util.LinkedList;
 
 /**
  * Dame
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
  */
 public class Queen extends PieceLongRange {
    public Queen(PlayerColor color) {
       super(color);
    }
 
+  /**
+    * Indique dans quels sens la dame peut se déplacer
+    */
    @Override
    public List<Integer[]> getOrientations() {
       List<Integer[]> orientations = new LinkedList<>();

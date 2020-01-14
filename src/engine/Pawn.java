@@ -5,6 +5,8 @@ import chess.PlayerColor;
 
 /**
  * Pion
+ * @author Cassandre Wojciechowski
+ * @author Gabriel Roch 
  */
 public class Pawn extends Piece {
    public Pawn(PlayerColor color) {
@@ -12,7 +14,7 @@ public class Pawn extends Piece {
    }
 
    /**
-    * Détermine la direction dans laquel le pion se déplace
+    * Détermine la direction dans laquelle le pion se déplace
     * @return +1 ou -1
     */
    private int direction() {
@@ -38,16 +40,18 @@ public class Pawn extends Piece {
       // avance tout droit si la case est libre
       if(!board.havePiece(c.add(0, direction()))) {
          list.addIfValidCase(c.getX(), c.getY() + direction());
-         if(baseLine() == c.getY() && board.getPiece(new Case(c.getX(), c.getY() + 2*direction())) == null) {
+         
+         if(baseLine() == c.getY() && board.getPiece(new Case(c.getX(), 
+                 c.getY() + 2*direction())) == null) {
             list.addIfValidCase(c.getX(), c.getY() + 2*direction());
          }
       }
       
-      // Prise en diagonal s'il y a une piece en diagonal
+      // Prise en diagonal s'il y a une pièce en diagonal
       for(int i = -1; i < 2; i += 2) {
          if(c.validAdd(i, direction())) {
             if(board.havePiece(c.add(i, direction()))) {
-               // Prise normal
+               // Prise normale
                list.add(c.getX() + i, c.getY() + direction());
             } else if(board.getLastMove() != null
                   && board.havePiece(c.add(i, 0)) 
@@ -76,7 +80,7 @@ public class Pawn extends Piece {
       if(!board.havePiece(move.getTo())
             && move.getTo().getX() != move.getFrom().getX()
          ) {
-         // prise en passant
+         // Prise en passant
          board.setPiece(new Case(move.getTo().getX(), move.getFrom().getY()), null);
       }
       return super.move(board, move);
