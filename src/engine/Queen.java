@@ -11,6 +11,7 @@ import java.util.LinkedList;
  * @author Gabriel Roch 
  */
 public class Queen extends PieceLongRange {
+   
    public Queen(PlayerColor color) {
       super(color);
    }

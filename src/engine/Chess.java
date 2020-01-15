@@ -49,7 +49,7 @@ public class Chess implements chess.ChessController {
       boolean cannotMove = board.countPossibleMoves(player) == 0;
 
       if (cannotMove && inCheck) {
-         view.displayMessage("Check mat !");
+         view.displayMessage("Check mate !");
       } else if(cannotMove) { // implicit !inCheck
          view.displayMessage("Pat !");
       } else if(inCheck) {
