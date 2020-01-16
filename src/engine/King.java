@@ -39,9 +39,13 @@ public class King extends Piece {
               && !board.havePiece(knightCase)
               && !board.havePiece(secondNeighbourCase)
               && !board.havePiece(neighbourCase)
-              && !board.caseTargeted(neighbourCase, getColor()) // case de transit pas en échecs
-              && !board.caseTargeted(kingCase, getColor()) // roi pas en échecs
-              // le test que la case de destionation n'est pas en échecs est fait lors du déplacement
+              // case de transit pas en échec
+              && !board.caseTargeted(neighbourCase, getColor()) 
+              // roi pas en échec
+              && !board.caseTargeted(kingCase, getColor()) 
+              
+              // le test de la case de destination pas en échec est fait lors du 
+              // déplacement
               ;
    }
    
@@ -104,8 +108,8 @@ public class King extends Piece {
       list.addIfValidCase(c.getX()+1, c.getY()  );
       list.addIfValidCase(c.getX()+1, c.getY()+1);
 
-      // On ne peut pas ajouter les Roques ici, car celà fait rentré dans un appel de
-      // methode recursif infini
+      // On ne peut pas ajouter les roques ici, car cela fait rentrer dans un appel 
+      // de methode recursif infini
 
       return list;
    }
