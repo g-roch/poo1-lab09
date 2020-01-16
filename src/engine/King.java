@@ -25,17 +25,22 @@ public class King extends Piece {
     * @param rookX Tour avec laquel roquer
     * @return true si le roque est permis
     */
-   private boolean canCastling(Board board, int rookX) {
-      int neighbourX = (rookX == 0 ? 3 : 5);
-      Case rookCase = new Case(rookX, baseLine());
-      Case neighbourCase = new Case(neighbourX, baseLine());
+   private boolean canCastling(Board board, int direction) {
+      Case rookCase = new Case(direction == -1 ? 0 : 7, baseLine());
+      Case neighbourCase = new Case(4+direction, baseLine());
+      Case secondNeighbourCase = new Case(4+2*direction, baseLine());
+      Case knightCase = new Case(rookCase.getX() - direction, baseLine());
       Case kingCase = new Case(4, baseLine());
       return !moved
               && board.havePiece(rookCase)
               && board.getPiece(rookCase) instanceof Rook
               && !((Rook) board.getPiece(rookCase)).haveMoved()
-              && !board.caseTargeted(neighbourCase, getColor())
-              && !board.caseTargeted(kingCase, getColor())
+              && !board.havePiece(knightCase)
+              && !board.havePiece(secondNeighbourCase)
+              && !board.havePiece(neighbourCase)
+              && !board.caseTargeted(neighbourCase, getColor()) // case de transit pas en échecs
+              && !board.caseTargeted(kingCase, getColor()) // roi pas en échecs
+              // le test que la case de destionation n'est pas en échecs est fait lors du déplacement
               ;
    }
    /**
@@ -44,7 +49,7 @@ public class King extends Piece {
     * @return true si le roque est permis
     */
    private boolean canCastlingShort(Board board) {
-      return canCastling(board, 7);
+      return canCastling(board, 1);
    }
    /**
     * Determine si le grand roque est possible
@@ -52,7 +57,7 @@ public class King extends Piece {
     * @return true si le roque est permis
     */
    private boolean canCastlingLong(Board board) {
-      return canCastling(board, 0);
+      return canCastling(board, -1);
    }
 
    /**
@@ -95,14 +100,20 @@ public class King extends Piece {
       list.addIfValidCase(c.getX()+1, c.getY()  );
       list.addIfValidCase(c.getX()+1, c.getY()+1);
 
+      // On ne peut pas ajouter les Roques ici, car celà fait rentré dans un appel de
+      // methode recursif infini
+
       return list;
    }
 
    @Override
    public ListCase possibleMove(Board board, Case c) {
       ListCase list = moveList(board, c);
-      if(canCastlingShort(board)) list.add(6, c.getY());
-      if(canCastlingLong(board))  list.add(2, c.getY());
+      for(int direction : new int[] {-1, +1}) {
+         if (canCastling(board, direction)) {
+            list.add(4+2*direction, c.getY());
+         }
+      }
       ListCase possibleMove = new ListCase();
       for(Case destinationCase : list) {
          Board tmpBoard = new Board(board);

@@ -4,7 +4,7 @@ import chess.PlayerColor;
 
 import java.util.Iterator;
 
-public class Board /* implements Iterable<Case> */ {
+public class Board {
 
    /**
     * Plateu de jeux
@@ -195,29 +195,4 @@ public class Board /* implements Iterable<Case> */ {
       }
       return countMoves;
    }
-/* TODO
-   @Override
-   public Iterator<Case> iterator() {
-      return new Iterator<Case>() {
-         private int x = 0;
-         private int y = 0;
-
-         @Override
-         public boolean hasNext() {
-            return x != 7 || y != 7;
-         }
-
-         @Override
-         public Case next() {
-            Case c = new Case(x, y);
-            ++x;
-            if(x >= 8) {
-               x = 0;
-               ++y;
-            }
-            return c;
-         }
-      };
-   }
- */
 }
