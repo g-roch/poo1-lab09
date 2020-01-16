@@ -1,8 +1,3 @@
-/*
- * TODO : supprimer avant de rendre
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import java.util.Objects;
@@ -82,6 +77,4 @@ class Case {
                 && o instanceof Case
                 && ((Case) o).x == x && ((Case) o).y == y;
     }
-    
 }
-

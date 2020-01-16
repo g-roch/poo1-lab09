@@ -166,8 +166,7 @@ public class Board {
       }
       return true;
    }
-
-
+   
    /**
     * Teste si une case est attaquée par une autre pièce
     * @param c Case à tester

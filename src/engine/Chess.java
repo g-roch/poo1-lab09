@@ -44,7 +44,6 @@ public class Chess implements chess.ChessController {
       switchPlayer();
       pawnPromotion();
 
-
       boolean inCheck = board.kingInCheck(player);
       boolean cannotMove = board.countPossibleMoves(player) == 0;
 

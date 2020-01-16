@@ -1,8 +1,3 @@
-/*
- * TODO : supprimer avant de rendre
- * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
- */
-
 package engine;
 
 import chess.PieceType;
