@@ -4,11 +4,13 @@ import chess.PieceType;
 import chess.PlayerColor;
 
 /**
- * Classe permettant de manipuler une piece de l'échiquiers
+ * Classe permettant de manipuler une piece de l'échiquier
  * @author Cassandre Wojciechowski
  * @author Gabriel Roch 
  */
+
 public abstract class Piece implements Cloneable {
+   
    private PlayerColor color;
 
    protected Piece(PlayerColor color) {
@@ -19,9 +21,8 @@ public abstract class Piece implements Cloneable {
       return color;
    }
 
-
    /**
-    * Indique si cette pièce mets en échec la case kingCase
+    * Indique si cette pièce met en échec la case kingCase
     */
    public boolean adversaryCheck(Board board, Case kingCase, Case selfCase) {
       ListCase moveList = moveList(board, selfCase);
@@ -33,13 +34,13 @@ public abstract class Piece implements Cloneable {
    }
 
    /**
-    * Retourne la liste de case de destination autorisé pour cette pièce,
-    * Indépendement de la mise en échecs de son propre roi.
+    * Retourne la liste de cases de destination autorisées pour cette pièce,
+    * indépendamment de la mise en échec de son propre roi.
     */
    protected abstract ListCase moveList(Board board, Case c);
 
    /**
-    * Retourne la liste de movement autorisé par les régles.
+    * Retourne la liste de mouvements autorisés par les régles.
     */
    public ListCase possibleMove(Board board, Case c) {
       ListCase moveList = moveList(board, c);
@@ -54,9 +55,8 @@ public abstract class Piece implements Cloneable {
       return possibleMove;
    }
 
-
    /**
-    * Déplace la pièce (Ne vérifie pas que le mouvement est valide)
+    * Déplace la pièce (ne vérifie pas que le mouvement est valide)
     */
    public boolean move(Board board, Move move) {
       board.setPiece(move.getTo(), this);
@@ -65,7 +65,7 @@ public abstract class Piece implements Cloneable {
    }
 
    /**
-    * Retourne le type de la piece pour l'affichage
+    * Retourne le type de la pièce pour l'affichage
     */
    public abstract PieceType getType();
 
@@ -77,6 +77,5 @@ public abstract class Piece implements Cloneable {
       } catch (CloneNotSupportedException e) { }
       return piece;
    }
-   
    
 }

@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Piece.java</file>
+            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/PieceLongRange.java</file>
             <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/chess/ChessController.java</file>
-            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Rook.java</file>
-            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/King.java</file>
+            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Piece.java</file>
+            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Move.java</file>
+            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/ChessGame.java</file>
             <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Chess.java</file>
             <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/engine/Board.java</file>
-            <file>file:/C:/Users/cassa/Documents/NetBeansProjects/POO1_Lab9/src/ChessGame.java</file>
         </group>
     </open-files>
 </project-private>

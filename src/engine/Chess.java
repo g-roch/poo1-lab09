@@ -4,14 +4,14 @@ import chess.ChessView;
 import chess.PlayerColor;
 
 /**
- * Controleur du jeux d'échecs
+ * Controleur du jeu d'échecs
  * @author Cassandre Wojciechowski
  * @author Gabriel Roch 
  */
 public class Chess implements chess.ChessController {
 
    /**
-    * Objet utiliser pour géré l'affichage à l'utilisateur.
+    * Objet utilisé pour gérer l'affichage à l'utilisateur.
     */
    private ChessView view;
 
@@ -49,7 +49,7 @@ public class Chess implements chess.ChessController {
       boolean cannotMove = board.countPossibleMoves(player) == 0;
 
       if (cannotMove && inCheck) {
-         view.displayMessage("Check mat !");
+         view.displayMessage("Check mate !");
       } else if(cannotMove) { // implicit !inCheck
          view.displayMessage("Pat !");
       } else if(inCheck) {
@@ -82,14 +82,15 @@ public class Chess implements chess.ChessController {
    }
 
    /**
-    * Mets à jour le plateau de jeu pour l'affichage
+    * Mise à jour du plateau de jeu pour l'affichage
     */
    private void showBoard() {
       for(int x = 0; x < 8; ++x) {
          for(int y = 0; y < 8; ++y) {
             Case c = new Case(x, y);
             if(board.havePiece(c))
-               view.putPiece(board.getPiece(c).getType(), board.getPiece(c).getColor(), x, y);
+               view.putPiece(board.getPiece(c).getType(), 
+                       board.getPiece(c).getColor(), x, y);
             else
                view.removePiece(x, y);
          }
@@ -97,9 +98,10 @@ public class Chess implements chess.ChessController {
    }
 
    /**
-    * Éffectue la promotion des pions se trouvant sur la prmière et dernière ligne
-    * @apiNote Cette fonction ne traite que le premier pion trouvé, dans une partie normale,
-    * il ne peut jamais avoir plus d'un pion sur la première ou dernière ligne
+    * Effectue la promotion des pions se trouvant sur la première et dernière ligne
+    * @apiNote Cette fonction ne traite que le premier pion trouvé, dans une partie 
+    * normale, il ne peut jamais avoir plus d'un pion sur la première ou dernière 
+    * ligne
     */
    private void pawnPromotion() {
       for(int x = 0; x < 8; ++x) {
@@ -111,7 +113,8 @@ public class Chess implements chess.ChessController {
             promotion = board.getPiece(c) instanceof Pawn;
          }
          if(promotion) {
-            String type = askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", new String[] {"Tour", "Cavalier", "Fou", "Dame"});
+            String type = askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", 
+                    new String[] {"Tour", "Cavalier", "Fou", "Dame"});
             switch (type) {
                case "Tour":
                   board.setPiece(c, new Rook(board.getPiece(c).getColor()));
@@ -163,7 +166,7 @@ public class Chess implements chess.ChessController {
     * Pose une question à choix à l'utilisateur
     * @param title Titre de la fenêtre
     * @param question Question à poser
-    * @param answers Liste des réponses possible
+    * @param answers Liste des réponses possibles
     * @return La réponse choisie par l'utilisateur
     */
    private String askUser(String title, String question, String[] answers) {
@@ -172,7 +175,8 @@ public class Chess implements chess.ChessController {
       for(int i = 0; i < answers.length; ++i) {
          userChoices[i] = new UserChoice(answers[i]);
       }
-      return view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", userChoices).toString();
+      return view.askUser("Promotion", "Quelle pièce voulez-vous obtenir ?", 
+              userChoices).toString();
    }
 
 }

@@ -1,4 +1,5 @@
 /*
+ * TODO : supprimer avant de rendre
  * vim: ts=3 softtabstop=3 shiftwidth=3 expandtab
  */
 
@@ -7,17 +8,18 @@ package engine;
 import java.util.Objects;
 
 /**
- * Classe permettant de référencer un case de l'échiquier
+ * Classe permettant de référencer une case de l'échiquier
  * @author Cassandre Wojciechowski
  * @author Gabriel Roch 
  */
 class Case {
     /**
-     * Coornonée horizontal dans l'échiquier (0 à gauche)
+     * Coordonnée horizontale dans l'échiquier (0 à gauche)
      */
     private int x;
+    
     /**
-     * Coornonée vertical dans l'échiquier (0 en bas)
+     * Coordonnée verticale dans l'échiquier (0 en bas)
      */
     private int y;
 
@@ -25,8 +27,8 @@ class Case {
     public int getY() { return y; }
 
     /**
-     * @param x Coordonnée horizontal
-     * @param y Coordonnée vertical
+     * @param x Coordonnée horizontale
+     * @param y Coordonnée verticale
      */
     public Case(int x, int y) {
         Objects.checkIndex(x, 8);
@@ -44,8 +46,11 @@ class Case {
     public Case add(int x, int y) {
         return new Case(this.x + x, this.y + y);
     }
+    
     public Case add(Integer orientation[]) {
-        if (orientation.length != 2) throw new RuntimeException("Orientation need 2 elems");
+        if (orientation.length != 2) 
+           throw new RuntimeException("Orientation need 2 elems");
+        
         return add(orientation[0], orientation[1]);
     }
 
@@ -58,16 +63,18 @@ class Case {
     public boolean validAdd(int x, int y) {
         return Board.validCoord(this.x + x, this.y + y);
     }
+    
     public boolean validAdd(Integer orientation[]) {
-        if (orientation.length != 2) throw new RuntimeException("Orientation need 2 elems");
+        if (orientation.length != 2) 
+           throw new RuntimeException("Orientation need 2 elems");
+        
         return validAdd(orientation[0], orientation[1]);
     }
 
-
     /**
-     * Compare les coordonnées de deux Case
+     * Compare les coordonnées de deux "Case"
      * @param o Case à comparer
-     * @return
+     * @return true si les "Case" sont les mêmes
      */
     public boolean equals(Object o) {
         return o == this
